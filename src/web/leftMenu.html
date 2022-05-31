@@ -1,0 +1,93 @@
+<div>
+  <q-list bordered padding class="text-primary" style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
+    <q-item
+      clickable
+      v-ripple="{ early: true }"
+      @click="setMenuState('prepare')"
+      active-class="my-menu-link"
+    >
+      <q-item-section avatar>
+        <q-icon name="inbox" />
+      </q-item-section>
+
+      <q-item-section>準備</q-item-section>
+    </q-item>
+
+    <q-item
+      clickable
+      v-ripple="{ early: true }"
+      @click="setMenuState('outgo')"
+      active-class="my-menu-link"
+    >
+      <q-item-section avatar>
+        <q-icon name="send" />
+      </q-item-section>
+
+      <q-item-section>支出</q-item-section>
+    </q-item>
+
+    <q-item
+      clickable
+      v-ripple="{ early: true }"
+      @click="setMenuState('income')"
+      active-class="my-menu-link"
+    >
+      <q-item-section avatar>
+        <q-icon name="point_of_sale" />
+      </q-item-section>
+
+      <q-item-section>収支</q-item-section>
+    </q-item>
+
+    <q-separator spaced />
+
+    <q-item
+      clickable
+      v-ripple="{ early: true }"
+      @click=""
+      active-class="my-menu-link"
+    >
+      <q-item-section avatar>
+        <q-icon name="settings" />
+      </q-item-section>
+
+      <q-item-section>設定</q-item-section>
+    </q-item>
+    <q-item
+      clickable
+      v-ripple="{ early: true }"
+      @click="setMenuState('help')"
+      active-class="my-menu-link"
+    >
+      <q-item-section avatar>
+        <q-icon name="help" />
+      </q-item-section>
+
+      <q-item-section>ヘルプ</q-item-section>
+    </q-item>
+
+    <q-separator spaced />
+
+    <q-item
+      clickable
+      v-ripple="{ early: true }"
+      @click="confirmLogout"
+      active-class="my-menu-link"
+    >
+      <q-item-section avatar>
+        <q-icon name="logout" />
+      </q-item-section>
+
+      <q-item-section>ログアウト</q-item-section>
+    </q-item>
+  </q-list>
+  <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
+    <div class="absolute-bottom bg-transparent">
+    <q-avatar size="56px" class="q-mb-sm">
+      <img src="https://drive.google.com/uc?id=1Zgr2K-ZX0nKVrOkG0mk6el3Qd8z-zNp6">
+    </q-avatar>
+    <div class="text-weight-bold">管理クラス: {{ className }}</div>
+    <div>{{ mail }}</div>
+  </div>
+</q-img>
+</div>

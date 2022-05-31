@@ -1,0 +1,27 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "build",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: build",
+			"detail": "npm run lint && npm run test && rimraf dist && webpack && cpx src/appsscript.json dist && cpx \"src/**/*.html\" dist && cpx \"src/**/*.js\" dist && cd dist/web && ren *.js *.html"
+		},
+		{
+			"type": "npm",
+			"script": "push",
+			"problemMatcher": [],
+			"label": "npm: push",
+			"detail": "npm run build && clasp push"
+		},
+		{
+			"type": "npm",
+			"script": "weblint",
+			"problemMatcher": [],
+			"label": "npm: weblint",
+			"detail": "eslint --fix src/web/**/*.js"
+		}
+	]
+}

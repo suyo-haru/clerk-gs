@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<!--
+    WARNING! Make sure that you match all Quasar related
+    tags to the same version! (Below it's "@2.6.6")
+  -->
+
+<head>
+  <link
+    href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons|Material+Icons+Outlined|Material+Icons+Round|Material+Icons+Sharp"
+    rel="stylesheet" type="text/css">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@^6.0.0/css/materialdesignicons.min.css" rel="stylesheet"
+    type="text/css">
+  <link href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" rel="stylesheet" type="text/css">
+  <link href="https://use.fontawesome.com/releases/v6.1.1/css/all.css" rel="stylesheet" type="text/css">
+  <link href="https://cdn.jsdelivr.net/npm/ionicons@^4.0.0/dist/css/ionicons.min.css" rel="stylesheet" type="text/css">
+  <link href="https://cdn.jsdelivr.net/npm/eva-icons@^1.0.0/style/eva-icons.css" rel="stylesheet" type="text/css">
+  <link href="https://themify.me/wp-content/themes/themify-v32/themify-icons/themify-icons.css" rel="stylesheet"
+    type="text/css">
+  <link href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"
+    rel="stylesheet" type="text/css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@^1.0.0/font/bootstrap-icons.css" rel="stylesheet"
+    type="text/css">
+  <link href="https://cdn.jsdelivr.net/npm/animate.css@^4.0.0/animate.min.css" rel="stylesheet" type="text/css">
+  <link href="https://cdn.jsdelivr.net/npm/quasar@2.6.6/dist/quasar.prod.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <!-- example of injection point where you write your app template -->
+  <div id="q-app">
+    <main-app v-if="isLoggedIn"></main-app>
+    <auth-user v-else></auth-user>
+  </div>
+  <script>
+
+  </script>
+  <!-- Add the following at the end of your body tag -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+  <!-- For Product -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script> -->
+  <script src="https://unpkg.com/vuex@4"></script>
+  <script src="https://unpkg.com/vuex-persistedstate/dist/vuex-persistedstate.umd.js"></script>
+  <!-- Vue devTool -->
+  <!-- <script src="http://localhost:8098"></script> -->
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quasar@2.6.6/dist/quasar.umd.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quasar@2.6.6/dist/lang/ja.umd.prod.js"></script>
+  <script src="https://unpkg.com/vue-router@4"></script>
+
+  <script>
+    const app = Vue.createApp({
+      computed: {
+        isLoggedIn () {
+          return store.state.isLoggedIn
+        }
+      }
+    })
+
+    app.use(Quasar, {
+      config: {
+        /*
+        brand: {
+          // primary: '#e46262',
+          // ... or all other brand colors
+        },
+        */
+        notify: { position: "bottom-left"}  // default set of options for Notify Quasar plugin
+        /*
+        loading: {...}, // default set of options for Loading Quasar plugin
+        loadingBar: { ... }, // settings for LoadingBar Quasar plugin
+        // ..and many more (check Installation card on each Quasar component/directive/plugin)
+        */
+      }
+    })
+    Quasar.lang.set(Quasar.lang.ja)
+
+    Quasar.AddressbarColor.set()
+
+    function getScript(name){return new Promise((resolve, reject) => {google.script.run.withSuccessHandler(js => resolve(js)).withFailureHandler(e => reject(e)).getScript(name)})}
+
+    const setUserProperty = function (key, value) {
+      const notif = Quasar.Notify.create({
+        type: 'ongoing',
+        message: '保存中...'
+      })
+      google.script.run.withSuccessHandler(() => {console.log(`[StoreHanlde]:Save ${key}, ${value}`);notif({type: 'positive', message: '', timeout: 100})}).withFailureHandler(() => {console.error(`[StoreHanlde]:Failed to Save ${key}, ${value}`);notif({type: 'negative',message: 'エラー:状態を保存できませんでした。'})}).setUserProperty(key, value);
+      userProperty[key] = value
+    }
+
+    const removeUserProperty = function (key) {
+      google.script.run.withSuccessHandler(() => {console.log(`[StoreHanlde]:Remove ${key}.`)}).removeUserProperty(key);
+      userProperty[key] = undefined
+    }
+
+    const removeAllUserProperty = function () {
+      google.script.run.withSuccessHandler(() => {console.log(`[StoreHanlde]:Remove.`)}).removeAllUserProperties();
+      userProperty = {}
+    }
+
+    let userProperty = <?!= JSON.stringify(PropertiesService.getUserProperties().getProperties()) ?>;
+    const storeObject = <?!= HtmlService.createTemplateFromFile("web/store.html").getRawContent(); ?>;
+
+    const { createStore } = Vuex
+
+    const store = createStore(storeObject);
+    app.use(store);
+
+    const { defineAsyncComponent } = Vue
+
+    function getComponent(name){
+      return new Promise((resolve, reject) => {
+        google.script.run.withSuccessHandler(obj => {
+          try {
+            const template = obj.template;
+            let componentObject = new Function(obj.componentObjectString)();
+            componentObject.template = template;
+            resolve(componentObject);
+          } catch (e){
+            console.error(e);
+            resolve({"template": `エラー:${ e.name }: ${e.message}  at ${e.lineNumber}: ${e.columnNumber}
+        stack: ${e.stack}`});
+          }
+        }).withFailureHandler(e => {resolve({"template": `サーバーエラー:${ e.name }: ${e.message} at ${e.lineNumber}: ${e.columnNumber}
+        stack: ${e.stack}`})})
+        .getPageTemplate(name);
+      })
+    }
+
+    const PageLoading = {
+      "template": `<q-inner-loading
+                    showing
+                    label="読み込み中..."
+                    label-class="text-teal"
+                    label-style="font-size: 1.1em">
+                      <q-spinner-ios
+                      color="primary"
+                      size="5em"/>読み込み中...
+                    </q-inner-loading>`
+                    };
+
+    const PageImprement = {
+      "template": `<div class="text-h3 q-ma-lg">実装中です</div>`
+    }
+
+    const LeftMenu = Vue.defineAsyncComponent(
+      {
+        // ファクトリ関数
+        loader: () => getComponent("web/leftMenu"),
+        // 非同期コンポーネントが読み込み中に使うコンポーネント
+        loadingComponent: PageLoading,
+        // 読み込み中のコンポーネントを表示するまでの時間。デフォルト: 200ms.
+        delay: 50,
+        // タイムアウトが指定されていて、それを超えた場合、
+        // エラーコンポーネントが表示されます。デフォルト: Infinity.
+        timeout: 3000
+      }
+    );
+
+    const Pages = {
+      prepare: {
+        info: defineAsyncComponent({ loader: () => getComponent("web/prepare.info"), loadingComponent: PageLoading, timeout:0 }),
+        planing: defineAsyncComponent({ loader: () => getComponent("web/prepare.list"), loadingComponent: PageLoading, timeout:0 }),
+        planDetail: defineAsyncComponent({ loader: () => getComponent("web/prepare.list.detail"), loadingComponent: PageLoading, timeout:0 }),
+        budget: defineAsyncComponent({ loader: () => getComponent("web/prepare.budget"), loadingComponent: PageLoading, timeout:0 }),
+
+      },
+      outgo: {
+        purchase: defineAsyncComponent({ loader: () => getComponent("web/outgo.list"), loadingComponent: PageLoading, timeout:0 }),
+        detail: defineAsyncComponent({ loader: () => getComponent("web/outgo.list.detail"), loadingComponent: PageLoading, timeout:0 })
+      },
+      income: {
+        goodies: defineAsyncComponent({ loader: () => getComponent("web/income.list"), loadingComponent: PageLoading, timeout:0 }),
+        goodsDetail: defineAsyncComponent({ loader: () => getComponent("web/income.list.detail"), loadingComponent: PageLoading, timeout:0 }),
+        pos: PageImprement,
+        earn: PageImprement
+      },
+      help: {
+        index: defineAsyncComponent({ loader: () => getComponent("web/help"), loadingComponent: PageLoading, timeout:0 }),
+
+      }
+    }
+
+    const AuthPage = defineAsyncComponent({
+      loader: () => getComponent("web/userAuth"),
+      loadingComponent: PageLoading,
+      delay: 0
+      });
+
+    const routes = [
+      {
+        path: '/',
+        redirect: '/prepare'
+      },
+      {
+        path: '/prepare',
+        redirect: '/prepare/info'
+      },
+      {
+        path: '/prepare/info',
+        component: Pages.prepare.info
+      },
+      {
+        path: '/prepare/planing',
+        component: Pages.prepare.planing
+      },
+      {
+        path: '/prepare/planing/:goodsid',
+        component: Pages.prepare.planDetail
+      },
+      {
+        path: '/prepare/budget',
+        component: Pages.prepare.budget
+      },
+      {
+        path: '/outgo',
+        redirect: '/outgo/purchase'
+      },
+      {
+        path: '/outgo/purchase',
+        component: Pages.outgo.purchase
+      },
+      {
+        path: '/outgo/purchase/:goodsid',
+        component: Pages.outgo.detail
+      },
+      {
+        path: '/income',
+        redirect: '/income/goodies'
+      },
+      {
+        path: '/income/goodies',
+        component: Pages.income.goodies
+      },
+      {
+        path: '/income/goodies/:goodsid',
+        component: Pages.income.goodsDetail
+      },
+      {
+        path: '/income/pos',
+        component: Pages.income.pos
+      },
+      {
+        path: '/income/earn',
+        component: Pages.income.earn
+      },
+      {
+        path: '/help',
+        component: Pages.help.index
+      },
+      {
+        path: '/help/demo',
+        component: defineAsyncComponent(() => getComponent('web/help.demo'))
+      }
+    ]
+
+    const router = VueRouter.createRouter({
+      // Provide the history implementation to use. We are using the hash history for simplicity here.
+      history: VueRouter.createWebHashHistory(),
+      routes, // short for `routes: routes`
+    })
+
+    app.use(router)
+    
+    const Main = defineAsyncComponent(
+      {
+        // ファクトリ関数
+        loader: () => getComponent("web/app"),
+        // 非同期コンポーネントが読み込み中に使うコンポーネント
+        loadingComponent: PageLoading,
+        // 読み込み中のコンポーネントを表示するまでの時間。デフォルト: 200ms.
+        delay: 0,
+        // タイムアウトが指定されていて、それを超えた場合、
+        // エラーコンポーネントが表示されます。デフォルト: Infinity.
+        timeout: 3000
+      }
+    );
+
+
+    app.component('page-loading',PageLoading)
+    app.component('main-app', Main)
+    app.component('auth-user',AuthPage)
+    app.mount('#q-app')
+  </script>
+  <style>
+    .flex-break {
+      flex: 1 0 100% !important;
+    }
+  </style>
+</body>
+
+</html>

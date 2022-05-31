@@ -1,0 +1,40 @@
+<q-layout view="lHr LpR lFf">
+  <q-header elevated class="bg-black text-white" height-hint="98">
+    <q-toolbar>
+      <q-btn dense flat round icon="menu" @click="toggleLeftDrawer"/>
+
+      <q-toolbar-title>
+        <q-avatar>
+          <q-icon name="inbox"></q-icon>
+        </q-avatar>
+        学園祭 会計支援システム
+      </q-toolbar-title>
+
+    </q-toolbar>
+
+    <q-tabs align="left">
+      <q-route-tab to="/prepare/info" label="お店の情報"></q-route-tab>
+      <q-route-tab to="/prepare/planing" label="支出予定"></q-route-tab>
+      <q-route-tab to="/prepare/budget" label="予算"></q-route-tab>
+    </q-tabs>
+  </q-header>
+
+  <q-drawer show-if-above v-model="leftDrawerOpen" side="left" elevated>
+    <left-menu></left-menu>
+  </q-drawer>
+
+  <q-page-container>
+    <router-view></router-view>
+  </q-page-container>
+
+  <q-footer elevated class="row inline justify-between bg-grey-8 text-white">
+    <q-toolbar>
+      <q-toolbar-title>
+        <div class="text-h3 q-pa-lg">予算</div>
+      </q-toolbar-title>
+      <div class="text-h2 text-weight-bold q-pa-lg">
+        ￥ ---
+      </div>
+    </q-toolbar>
+  </q-footer>
+</q-layout>

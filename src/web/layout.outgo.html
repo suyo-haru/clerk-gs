@@ -1,0 +1,38 @@
+<q-layout view="lHr LpR lFf">
+  <q-header elevated class="bg-yellow-8 text-white" height-hint="98">
+    <q-toolbar>
+      <q-btn dense flat round icon="menu" @click="toggleLeftDrawer"/>
+
+      <q-toolbar-title>
+        <q-avatar>
+          <q-icon name="send"></q-icon>
+        </q-avatar>
+        学園祭 会計支援システム
+      </q-toolbar-title>
+
+    </q-toolbar>
+
+    <q-tabs align="left">
+      <q-route-tab to="/outgo/purchase" label="購入"></q-route-tab>
+    </q-tabs>
+  </q-header>
+
+  <q-drawer show-if-above v-model="leftDrawerOpen" side="left" elevated>
+    <left-menu></left-menu>
+  </q-drawer>
+
+  <q-page-container>
+    <router-view></router-view>
+  </q-page-container>
+
+  <q-footer elevated class="row inline justify-between bg-grey-8 text-white">
+    <q-toolbar>
+      <q-toolbar-title>
+        <div class="text-h3 q-pa-lg">支出</div>
+      </q-toolbar-title>
+      <div class="text-h2 text-weight-bold q-pa-lg">
+        ￥{{ sum }}
+      </div>
+    </q-toolbar>
+  </q-footer>
+</q-layout>

@@ -1,0 +1,32 @@
+<q-layout>
+  <q-page-container class="flex flex-center justify-content" style="position: absolute; top: 50%; left: 50%; margin-right: -50%; transform: translate(-50%, -50%);">
+    <div>
+      <h3>学園祭 会計支援システム</h3>
+      <q-form
+        @submit="onSubmit"
+        @reset="onReset"
+        class="q-gutter-md"
+      >
+        <q-select filled
+          v-model="classCode"
+          :options="classList"
+          label="クラス"
+          hint="クラスを選択してください。"
+        />
+        <q-input
+          filled
+          type="password"
+          v-model="passCode"
+          label="パスワード"
+          lazy-rules
+          :rules="[val => val !== null && val !== '' || 'パスワードを入力してください']"
+        />
+
+        <div>
+          <q-btn label="ログイン" type="submit" color="primary"/>
+          <q-btn label="リセット" type="reset" color="primary" flat class="q-ml-sm" />
+        </div>
+      </q-form>
+    </div>
+  </q-page-container>
+</q-layout>

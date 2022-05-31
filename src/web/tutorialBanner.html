@@ -1,0 +1,17 @@
+<q-slide-transition appear :duration="500">
+  <q-banner class="bg-info text-white" v-show="display" style="min-height: 0; padding-top: 0; padding-bottom: 0;">
+    <template v-slot:avatar>
+      <q-icon name="lightbulb" style="padding: 25% 10% 25%;"/>
+    </template>
+    <template v-slot:default>
+      <div style="padding: 1em 1em 0;">
+        <slot>これはチュートリアル枠です。</slot>
+      </div>
+    </template>
+    <template v-slot:action>
+      <q-btn flat color="white" label="閉じる" @click="closeTips" />
+      <q-btn v-if="tips-page != null" @click="$emit('detailClick')" flat color="white" :label="tips-button ? tips-button : '詳細' " />
+    </template>
+
+  </q-banner>
+</q-slide-transition>
