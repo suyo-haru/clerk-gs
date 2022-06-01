@@ -64,8 +64,7 @@ const MainView = {
     IncomeLayout,
     OutgoLayout,
     PrepareLayout,
-    GeneralLayout,
-    Testing,
+    GeneralLayout
   },
   template: `
     <income-layout v-if="menu == 'income'" />
@@ -79,6 +78,7 @@ return {
   components: {
     LeftMenu,
     MainView,
+    Testing
   },
   computed: {
     menuState() {
