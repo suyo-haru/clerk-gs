@@ -1,7 +1,7 @@
 const TipsBanner = Vue.defineAsyncComponent(() => getComponent('tutorialBanner'));
 
 return {
-  props: ['MenuMode', 'ListTitle', 'AcceptImage', 'DetailUrl'],
+  props: ['MenuMode', 'ListTitle', 'AcceptImage', 'DetailUrl', 'AddCommitFunction', 'DeleteCommitFunction'],
   components: {
     TipsBanner,
   },
@@ -10,21 +10,22 @@ return {
       return store.state.demoMode;
     },
     goodies() {
-      return store.state.outgo.goodies;
+      return store.state[this.$props.MenuMode].goodies;
     },
   },
-  setup() {
+  setup(props) {
     const currentGoodsPrice = Vue.ref(null);
     const currentGoodsName = Vue.ref(null);
+    const currentGoodsImage = Vue.ref(null);
     const isOpened = Vue.ref(true);
 
     return {
       currentGoodsName,
       currentGoodsPrice,
+      currentGoodsImage,
       isOpened,
       onSubmit() {
-        store.commit('addOutgoGoods', {
-          no: store.state.outgo.goodies.length,
+        store.commit(props.AddCommitFunction, {
           name: currentGoodsName.value,
           amount: currentGoodsAmount.value,
           price: currentGoodsPrice.value,
@@ -44,7 +45,7 @@ return {
       },
       deleteItem(item) {
         Quasar.Dialog.create({
-          title: '確認 ',
+          title: '確認',
           message: '「 ' + item.name + ' 」を消去してもよろしいですか？',
           cancel: true,
           persistent: true,
