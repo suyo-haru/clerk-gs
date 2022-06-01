@@ -1,4 +1,4 @@
-const TipsBanner = Vue.defineAsyncComponent(() => getComponent('tutorialBanner'));
+const TipsBanner = Vue.defineAsyncComponent(() => getComponent('web/tutorialBanner'));
 
 return {
   components: {

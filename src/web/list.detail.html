@@ -1,0 +1,36 @@
+<tips-banner v-if="isDemoMode" tips-page @detail-click="this.$router.push('/help/demo')">
+  <b>デモモード</b>
+  <p>現在、デモモードが有効化されています。</p>
+  <p>このモードで加えられた変更の内容はログアウトすると消去されます。</p>
+</tips-banner>
+<q-form @submit="onSubmit" @reset="onReset" class="fit column q-pa-md">
+  <div class="text-h4">項目の編集 - No.{{ goodies.find(item => item.no == $route.params.goodsid).no + 1 }} </div>
+  <div class="fit row wrap justify-evenly">
+    <div class="q-pa-md col-grow q-gutter-md">
+      <q-input name="name" filled v-model="currentGoodsName" label="名前" hint="商品名" lazy-rules
+        :rules="[ val => val && val.length > 0 || 'この項目は必須です。']" />
+      <q-input name="price" filled type="number" v-model="currentGoodsPrice" label="値段" lazy-rules suffix="¥"
+        :rules="[ val => val !== null && val !== '' || '値段を入力してください。' ]" />
+    </div>
+    <div class="q-pa-md col-grow">
+      <q-file accept="image/*" filled bottom-slots v-model="imageFile" label="領収書" counter multiple>
+        <template v-slot:prepend>
+          <q-icon name="cloud_upload" @click.stop />
+        </template>
+        <template v-slot:append>
+          <q-icon name="close" @click.stop="imageFile = null" class="cursor-pointer" />
+        </template>
+
+        <template v-slot:hint>
+          領収書の写真
+        </template>
+      </q-file>
+      <q-img class="q-mt-lg" :src="createBlobUrl">
+    </div>
+  </div>
+  <div class="row justify-end">
+    <q-btn label="保存" type="submit" color="primary" />
+    <q-btn v-if="isChanged" label="キャンセル" type="reset" color="primary" flat class="q-ml-sm" />
+    <q-btn v-else to="/prepare/planing"  label="戻る" color="primary" flat class="q-ml-sm" />
+  </div>
+</q-form>
