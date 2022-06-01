@@ -1,7 +1,13 @@
 const TipsBanner = Vue.defineAsyncComponent(() => getComponent('web/tutorialBanner'));
 
 return {
-  props: ['MenuMode', 'ListTitle', 'AcceptImage', 'DetailUrl', 'AddCommitFunction', 'DeleteCommitFunction'],
+  props: {
+    'menuMode': String,
+    'listTitle': String,
+    'acceptImage': Boolean,
+    'detailUrl': String,
+    'commitFunction': String
+  },
   components: {
     TipsBanner,
   },
@@ -10,7 +16,7 @@ return {
       return store.state.demoMode;
     },
     goodies() {
-      return store.state[this.$props.MenuMode].goodies;
+      return store.state[this.$props.menuMode].goodies;
     },
   },
   setup(props) {
@@ -25,22 +31,19 @@ return {
       currentGoodsImage,
       isOpened,
       onSubmit() {
-        store.commit(props.AddCommitFunction, {
+        store.commit('add' + props.commitFunction, {
           name: currentGoodsName.value,
-          amount: currentGoodsAmount.value,
-          price: currentGoodsPrice.value,
+          price: currentGoodsPrice.value
         });
-        isDialogOpened.value = false;
-
+        
         Quasar.Notify.create({
           color: 'green-4',
           textColor: 'white',
           icon: 'cloud_done',
-          message: '追加しました。',
+          message: '追加しました。'
         });
 
         currentGoodsName.value = null;
-        currentGoodsAmount.value = null;
         currentGoodsPrice.value = null;
       },
       deleteItem(item) {
@@ -48,12 +51,11 @@ return {
           title: '確認',
           message: '「 ' + item.name + ' 」を消去してもよろしいですか？',
           cancel: true,
-          persistent: true,
+          persistent: true
         }).onOk(() => {});
       },
       onReset() {
         currentGoodsName.value = null;
-        currentGoodsAmount.value = null;
         currentGoodsPrice.value = null;
       },
     };

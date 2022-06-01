@@ -3,7 +3,7 @@
 const TipsBanner = Vue.defineAsyncComponent(() => getComponent('web/tutorialBanner'));
 
 return {
-  props: ['MenuMode', 'ListTitle', 'AcceptImage', 'DetailUrl'],
+  props: { menuMode: String, acceptImage: Boolean, backUrl: String, commitFunction: String},
   components: {
     TipsBanner,
   },
@@ -37,7 +37,7 @@ return {
   },
   setup(props) {
     const route = VueRouter.useRoute();
-    const goods = store.state.outgo.goodies.find((item) => item.no == route.params.goodsid);
+    const goods = store.state.outgo.goodies[route.params.goodsid];
     const currentGoodsPrice = Vue.ref(goods.price);
     const currentGoodsName = Vue.ref(goods.name);
     const imageFile = Vue.ref(null);
@@ -48,10 +48,12 @@ return {
       isChanged,
       imageFile,
       onSubmit() {
-        store.commit('editOutgoGoods', {
-          no: route.params.goodsid,
-          name: currentGoodsName.value,
-          price: currentGoodsPrice.value,
+        store.commit('edit' + props.commitFunction, {
+          index: route.params.goodsid,
+          item: {
+            name: currentGoodsName.value,
+            price: currentGoodsPrice.value,
+          }
         });
 
         Quasar.Notify.create({
@@ -64,7 +66,6 @@ return {
       onReset() {
         currentGoodsPrice.value = goods.price;
         currentGoodsName.value = goods.name;
-        currentGoodsAmount.value = goods.amount;
         imageFile.value = null;
         isChanged.value = false;
       },

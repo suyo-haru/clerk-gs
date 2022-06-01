@@ -4,9 +4,9 @@
   <p>このモードで加えられた変更の内容はログアウトすると消去されます。</p>
 </tips-banner>
 <div class="q-pa-md">
-  <div class="text-h4 q-pa-md"> {{ ListTitle }} </div>
+  <div class="text-h4 q-pa-md"> {{ listTitle }} </div>
   <q-list bordered separator>
-    <q-item clickable v-ripple v-for="(goods, index) in goodies" :to="goodsUrl + goods.no">
+    <q-item clickable v-ripple v-for="(goods, index) in goodies" :to="detailUrl + '/' + index">
       <q-item-section> {{ index + 1 }}. {{ goods.name }}</q-item-section>
       <q-item-section side> ¥ {{ goods.price }} </q-item-section>
       <q-item-section avatar>
@@ -21,8 +21,12 @@
               :rules="[ val => val && val.length > 0 || 'この項目は必須です。']" />
             <q-input name="price" filled type="number" v-model="currentGoodsPrice" label="値段" lazy-rules prefix="¥"
               :rules="[ val => val !== null && val !== '' || '値段を入力してください。' ]" />
+            <div class="row justify-start">
+              <q-btn label="保存" type="submit" color="primary" />
+              <q-btn label="クリア" type="reset" color="primary" flat class="q-ml-sm" />
+            </div>
           </div>
-          <div v-if="AcceptImage" class="q-pa-md col-grow">
+          <div v-if="acceptImage" class="q-pa-md col-grow">
             <q-file accept="image/*" filled bottom-slots v-model="currentGoodsImage" label="領収書" counter multiple>
               <template v-slot:prepend>
                 <q-icon name="cloud_upload" @click.stop />
@@ -35,13 +39,8 @@
                 領収書の写真
               </template>
             </q-file>
-            <q-img class="q-mt-lg" :src="createBlobUrl">
+            <q-img class="q-mt-lg" :src="createBlobUrl" />
           </div>
-        </div>
-        <div class="row justify-end">
-          <q-btn label="保存" type="submit" color="primary" />
-          <q-btn v-if="isChanged" label="キャンセル" type="reset" color="primary" flat class="q-ml-sm" />
-          <q-btn v-else to="/prepare/planing"  label="戻る" color="primary" flat class="q-ml-sm" />
         </div>
       </q-form>
     </q-expansion-item>

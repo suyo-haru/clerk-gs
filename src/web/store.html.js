@@ -10,7 +10,7 @@
           state.goodies.push(item)
         },
         editPreOutgoGoods(state, item){
-          state.goodies[state.goodies.findIndex(i => i.no == item.no)] = item
+          state.goodies[item.index] = item.item
         },
         setShopInfo (state, info){
           state.info = info
@@ -27,9 +27,14 @@
       mutations: {
         addIncomeGoods(state, item) {
           state.goodies.push(item)
+        },
+        editIncomeGoods(state, item){
+          state.goodies[item.index] = item.item
         }
       },
-      actions: {  }
+      actions: {
+
+      }
     },
     outgo: { 
       state: () => ({
@@ -40,10 +45,12 @@
           state.goodies.push(item)
         },
         editOutgoGoods(state, item){
-          state.goodies[state.goodies.findIndex(i => i.no == item.no)] = item
+          state.goodies[item.index] = item.item
         }
       },
-      actions: {  }
+      actions: {
+
+      }
     }
   },
   state () {

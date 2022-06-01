@@ -53,7 +53,7 @@ const GeneralLayout = defineAsyncComponent({
 });
 
 const Testing = defineAsyncComponent({
-  loader: () => getComponent('web/list'),
+  loader: () => getComponent(''),
   loadingComponent: PageLoading,
   delay: 50,
 });
@@ -64,7 +64,7 @@ const MainView = {
     IncomeLayout,
     OutgoLayout,
     PrepareLayout,
-    GeneralLayout
+    GeneralLayout,
   },
   template: `
     <income-layout v-if="menu == 'income'" />
@@ -78,7 +78,7 @@ return {
   components: {
     LeftMenu,
     MainView,
-    Testing
+    Testing,
   },
   computed: {
     menuState() {

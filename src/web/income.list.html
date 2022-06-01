@@ -1,29 +1,7 @@
+<list-comp menu-mode="income" list-title="商品" detail-url="/income/goodies" commit-function="IncomeGoods"></list-comp>
+<!--
 <tips-banner v-if="isDemoMode" @detail-click="this.$router.push('/help/demo')">
   <b>デモモード</b>
   <p>現在、デモモードが有効化されています。</p>
   <p>このモードで加えられた変更の内容はログアウトすると消去されます。</p>
-</tips-banner>
-<div class="q-pa-md" style="">
-  <div class="text-h4 q-pa-md">出費</div>
-  <q-list bordered separator>
-    <q-item clickable v-ripple="{ early: true}" v-for="(goods, index) in goodies" :to="'/outgo/purchase/' + goods.no">
-      <q-item-section> {{ index + 1 }}. {{ goods.name }}</q-item-section>
-      <q-item-section side>{{ goods.price }} ¥ </q-item-section>
-      <q-item-section avatar>
-        <q-btn flat color="negative" icon="delete" @click="deleteItem(index)" />
-      </q-item-section>
-    </q-item>
-    <q-expansion-item expand-separator icon="add" :duration="500" label="追加" v-model="isOpened">
-      <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md q-pa-md">
-        <q-input name="name" filled v-model="currentGoodsName" label="名前" hint="商品名" lazy-rules
-          :rules="[ val => val && val.length > 0 || 'この項目は必須です。']" />
-        <q-input name="price" filled type="number" v-model="currentGoodsPrice" label="値段" lazy-rules suffix="¥"
-          :rules="[ val => val !== null && val !== '' || '値段を入力してください。' ]" />
-        <div>
-          <q-btn label="追加" type="submit" color="primary" />
-          <q-btn label="リセット" type="reset" color="primary" flat class="q-ml-sm" />
-        </div>
-      </q-form>
-    </q-expansion-item>
-  </q-list>
-</div>
+</tips-banner> -->
