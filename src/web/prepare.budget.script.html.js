@@ -45,7 +45,7 @@ return {
             applytemporary : debounce(function(){
                 store.commit('setTemporaryBill',this.budgetSum)
             }, 500),
-            onsSubmit () {
+            onSubmit () {
                 store.commit('setBudget', {
                     summaryBill: this.budgetSum,
                     studentBill: this.studentBill,
