@@ -4,16 +4,21 @@
   <p>このモードで加えられた変更の内容はログアウトすると消去されます。</p>
 </tips-banner>
 <q-form @submit="onSubmit" @reset="onReset" class="fit column q-pa-md">
-  <div class="text-h4">項目の編集 - No.{{ $route.params.goodsid }} </div>
+  <div class="text-h4">項目の編集 - No.{{ this.$route.params.goodsid + 1 }} </div>
   <div class="fit row wrap justify-evenly">
     <div class="q-pa-md col-grow q-gutter-md">
       <q-input name="name" filled v-model="currentGoodsName" label="名前" hint="商品名" lazy-rules
         :rules="[ val => val && val.length > 0 || 'この項目は必須です。']" />
-      <q-input name="price" filled type="number" v-model="currentGoodsPrice" label="値段" lazy-rules suffix="¥"
+      <q-input name="price" filled type="number" v-model="currentGoodsPrice" label="値段" lazy-rules prefix="¥"
         :rules="[ val => val !== null && val !== '' || '値段を入力してください。' ]" />
+      <div class="row justify-start">
+        <q-btn label="保存" type="submit" color="primary" />
+        <q-btn v-if="isChanged" label="キャンセル" type="reset" color="primary" flat class="q-ml-sm" />
+        <q-btn v-else :to="backUrl"  label="戻る" color="primary" flat class="q-ml-sm" />
+      </div>
     </div>
-    <div class="q-pa-md col-grow">
-      <q-file accept="image/*" filled bottom-slots v-model="imageFile" label="領収書" counter multiple>
+    <div v-if="acceptImage" class="q-pa-md col-grow">
+      <q-file accept="image/*" filled bottom-slots v-model="currentGoodsImage" label="領収書" counter multiple>
         <template v-slot:prepend>
           <q-icon name="cloud_upload" @click.stop />
         </template>
@@ -25,12 +30,7 @@
           領収書の写真
         </template>
       </q-file>
-      <q-img class="q-mt-lg" :src="createBlobUrl">
+      <q-img class="q-mt-lg" :src="createBlobUrl" />
     </div>
-  </div>
-  <div class="row justify-end">
-    <q-btn label="保存" type="submit" color="primary" />
-    <q-btn v-if="isChanged" label="キャンセル" type="reset" color="primary" flat class="q-ml-sm" />
-    <q-btn v-else :to="back-url"  label="戻る" color="primary" flat class="q-ml-sm" />
   </div>
 </q-form>

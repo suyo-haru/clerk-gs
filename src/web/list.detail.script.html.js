@@ -14,7 +14,7 @@ return {
     currentGoodsName(_1, _2) {
       this.isChanged = true;
     },
-    imageFile(val, _2) {
+    currentGoodsImage(val, _2) {
       if (val !== null) {
         this.isChanged = true;
       }
@@ -25,11 +25,11 @@ return {
       return store.state.demoMode;
     },
     goodies() {
-      return store.state.outgo.goodies;
+      return store.state[this.$props.menuMode].goodies;
     },
     createBlobUrl() {
-      if (this.imageFile != null) {
-        return URL.createObjectURL(this.imageFile[0]);
+      if (this.currentGoodsImage != null) {
+        return URL.createObjectURL(this.currentGoodsImage[0]);
       } else {
         return null;
       }
@@ -37,16 +37,16 @@ return {
   },
   setup(props) {
     const route = VueRouter.useRoute();
-    const goods = store.state.outgo.goodies[route.params.goodsid];
+    const goods = store.state[props.menuMode].goodies[route.params.goodsid];
     const currentGoodsPrice = Vue.ref(goods.price);
     const currentGoodsName = Vue.ref(goods.name);
-    const imageFile = Vue.ref(null);
+    const currentGoodsImage = Vue.ref(null);
     const isChanged = Vue.ref(false);
     return {
       currentGoodsName,
       currentGoodsPrice,
       isChanged,
-      imageFile,
+      currentGoodsImage,
       onSubmit() {
         store.commit('edit' + props.commitFunction, {
           index: route.params.goodsid,
@@ -66,7 +66,7 @@ return {
       onReset() {
         currentGoodsPrice.value = goods.price;
         currentGoodsName.value = goods.name;
-        imageFile.value = null;
+        currentGoodsImage.value = null;
         isChanged.value = false;
       },
     };
