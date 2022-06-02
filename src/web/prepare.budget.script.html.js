@@ -45,7 +45,7 @@ return {
             applytemporary : debounce(function(){
                 store.commit('setTemporaryBill',this.budgetSum)
             }, 500),
-            onsubmit () {
+            onsSubmit () {
                 store.commit('setBudget', {
                     summaryBill: this.budgetSum,
                     studentBill: this.studentBill,
@@ -59,6 +59,7 @@ return {
                     icon: 'cloud_done',
                     message: '設定しました。'
                 });
+                return;
             }
         }
     }
