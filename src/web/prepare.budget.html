@@ -1,4 +1,48 @@
-<div class="q-ma-md">
-  <div class="text-h4">予算の決定</div>
-  <p>予定支出: {{ sumOfPlaning }}</p>
-</div>
+<q-form @submit="onSubmit" class="q-ma-md">
+  <div class="row justify-between items-center">
+    <div class="text-h4 q-my-sm">予算の決定</div>
+    <div><q-btn type="submit" color="primary" label="登録" /></div>
+  </div>
+  <div class="full-width column items-stretch q-mx-md q-gutter-md">
+    <div class="full-width">
+      <q-field filled label="予定支出の合計" stack-label bottom-slots>
+        <template v-slot:control>
+          <div class="self-center full-width no-outline" tabindex="0">¥ {{ sumOfPlaning }}</div>
+        </template>
+        <template v-slot:hint>
+          「支出予定」タブで登録した物品の値段の合計です（参考値）。
+        </template>
+      </q-field>
+    </div>
+    <div class="full-width row items-center q-gutter-sm">
+      <q-input type="number" class="col-grow" filled v-model="studentBill" label="生徒負担の合計金額" prefix="¥" />
+      <div class="text-h3 q-mx-lg">÷</div>
+      <q-input type="number" class="col-grow" filled v-model="numberOfStudent" label="生徒人数" suffix="人" />
+    </div>
+    <div class="full-width row items-center q-gutter-md">
+      <div class="text-h3 q-mx-lg"> = </div> 
+      <q-field class="col-grow" filled label="一人あたりの負担額" stack-label bottom-slots>
+        <template v-slot:control>
+          <div class="self-center full-width no-outline" tabindex="0">¥ {{ perStudentBill }}</div>
+        </template>
+        <template v-slot:hint>
+          一人当たりの負担額です。
+        </template>
+      </q-field>
+      <div class="text-h3 q-mx-lg">+</div>
+      <q-field class="col-grow" filled label="（あまり）" stack-label bottom-slots>
+        <template v-slot:control>
+          <div class="self-center full-width no-outline" tabindex="0">¥ {{ surplusBill }}</div>
+        </template>
+        <template v-slot:hint>
+          「生徒負担の合計金額」との差です。
+        </template>
+      </q-field>
+    </div>
+    <q-separator />
+    <div class="full-width row items-center q-gutter-sm">
+      <div class="text-h3 q-mx-lg">+</div>
+      <q-input type="number" class="col-grow" filled v-model="otherBill" label="先生・学校などの負担金額" prefix="¥" />
+    </div>
+  </div>
+</q-form>

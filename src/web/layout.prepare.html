@@ -13,9 +13,9 @@
     </q-toolbar>
 
     <q-tabs align="left">
-      <q-route-tab to="/prepare/info" label="お店の情報"></q-route-tab>
-      <q-route-tab to="/prepare/planing" label="支出予定"></q-route-tab>
-      <q-route-tab to="/prepare/budget" label="予算"></q-route-tab>
+      <q-route-tab @click="changePage(null)" to="/prepare/info" label="お店の情報"></q-route-tab>
+      <q-route-tab @click="changePage(null)" to="/prepare/planing" label="支出予定"></q-route-tab>
+      <q-route-tab @click="changePage('/prepare/budget')" to="/prepare/budget" label="予算"></q-route-tab>
     </q-tabs>
   </q-header>
 
@@ -30,10 +30,10 @@
   <q-footer elevated class="row inline justify-between bg-grey-8 text-white">
     <q-toolbar>
       <q-toolbar-title>
-        <div class="text-h3 q-pa-lg">予算</div>
+        <div class="text-h3 q-pa-lg">{{ footerTitle }}</div>
       </q-toolbar-title>
       <div class="text-h2 text-weight-bold q-pa-lg">
-        ￥ ---
+        ￥ {{ budget }}
       </div>
     </q-toolbar>
   </q-footer>

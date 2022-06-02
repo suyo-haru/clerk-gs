@@ -2,10 +2,27 @@
   modules: {
     prepare: {
       state: () => ({
+        budget: {
+          temporaryBill: 0,
+          summaryBill: 0,
+          studentBill: 0,
+          numberOfStudent: 1,
+          otherBill: 0
+        },
         goodies: [],
         info: {shopName: null, shopDetail: null}
       }),
       mutations: {
+        setTemporaryBill(state, value) {
+          state.budget.temporaryBill = value
+        },
+        setBill(state, item) {
+          state.budget.temporaryBill = item.summaryBill
+          state.budget.summaryBill = item.summaryBill
+          state.budget.studentBill = item.studentBill
+          state.budget.numberOfStudent = item.numberOfStudent
+          state.budget.otherBill = item.otherBill
+        },
         addPreOutgoGoods(state, item) {
           state.goodies.push(item)
         },
