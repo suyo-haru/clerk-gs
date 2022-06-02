@@ -47,10 +47,10 @@ return {
             }, 500),
             onSubmit () {
                 store.commit('setBudget', {
-                    summaryBill: this.budgetSum,
-                    studentBill: this.studentBill,
-                    numberOfStudent: this.numberOfStudent,
-                    otherBill: this.otherBill
+                    summaryBill: this.budgetSum.value,
+                    studentBill: this.studentBill.value,
+                    numberOfStudent: this.numberOfStudent.value,
+                    otherBill: this.otherBill.value]
                 });
 
                 Quasar.Notify.create({
