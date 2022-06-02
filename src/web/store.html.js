@@ -16,7 +16,7 @@
         setTemporaryBill(state, value) {
           state.budget.temporaryBill = value
         },
-        setBill(state, item) {
+        setBudget(state, item) {
           state.budget.temporaryBill = item.summaryBill
           state.budget.summaryBill = item.summaryBill
           state.budget.studentBill = item.studentBill
