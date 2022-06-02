@@ -50,7 +50,7 @@ return {
                     summaryBill: this.budgetSum.value,
                     studentBill: this.studentBill.value,
                     numberOfStudent: this.numberOfStudent.value,
-                    otherBill: this.otherBill.value]
+                    otherBill: this.otherBill.value
                 });
 
                 Quasar.Notify.create({
