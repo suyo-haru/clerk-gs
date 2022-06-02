@@ -47,10 +47,10 @@ return {
             }, 500),
             onSubmit () {
                 store.commit('setBudget', {
-                    summaryBill: this.budgetSum.value,
-                    studentBill: this.studentBill.value,
-                    numberOfStudent: this.numberOfStudent.value,
-                    otherBill: this.otherBill.value
+                    summaryBill: (Math.ceil(Number(studentBill.value) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)) + Number((Math.ceil(Number(studentBill.value) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)) - Number(studentBill.value)) + Number(otherBill.value),
+                    studentBill: studentBill.value,
+                    numberOfStudent: numberOfStudent.value,
+                    otherBill: otherBill.value
                 });
 
                 Quasar.Notify.create({
