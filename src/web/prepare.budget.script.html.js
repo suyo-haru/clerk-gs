@@ -34,10 +34,10 @@ return {
     },
     setup (){
         const { debounce } = Quasar
-        const studentBill = Vue.ref(store.state.prepare.goodies.reduce((pre,now) => pre + Number(now.price), 0));
+        const studentBill = Vue.ref(store.state.prepare.budget.studentBill == 0 ? store.state.prepare.goodies.reduce((pre,now) => pre + Number(now.price), 0) : store.state.prepare.budget.studentBill);
         const numberOfStudent = Vue.ref(store.state.prepare.budget.numberOfStudent);
         const otherBill = Vue.ref(store.state.prepare.budget.otherBill);
-        store.commit('setTemporaryBill',studentBill.value)
+        store.commit('setTemporaryBill',(Math.ceil(Number(studentBill.value) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)) + Number((Math.ceil(Number(studentBill.value) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)) - Number(studentBill.value)) + Number(otherBill.value))
         return {
             studentBill,
             numberOfStudent,
