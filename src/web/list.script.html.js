@@ -24,6 +24,7 @@ return {
     const currentGoodsName = Vue.ref(null);
     const currentGoodsImage = Vue.ref(null);
     const isOpened = Vue.ref(true);
+    const currentPagePath = VueRouter.useRoute().path;
 
     return {
       currentGoodsName,
@@ -46,13 +47,17 @@ return {
         currentGoodsName.value = null;
         currentGoodsPrice.value = null;
       },
-      deleteItem(item) {
+      deleteItem(index) {
         Quasar.Dialog.create({
           title: '確認',
-          message: '「 ' + item.name + ' 」を消去してもよろしいですか？',
+          message: '「 ' + this.goodies[index].name  + ' 」を消去してもよろしいですか？',
           cancel: true,
           persistent: true
-        }).onOk(() => {});
+        }).onOk(() => {
+          store.commit('delete' + props.commitFunction, index);
+          router.push(currentPagePath);
+        });
+        
       },
       onReset() {
         currentGoodsName.value = null;

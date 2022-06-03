@@ -29,6 +29,9 @@
         editPreOutgoGoods(state, item){
           state.goodies[item.index] = item.item
         },
+        deletePreOutgoGoods(state, index){
+          state.goodies.splice(index, 1)
+        },
         setShopInfo (state, info){
           state.info = info
         }
@@ -47,6 +50,9 @@
         },
         editIncomeGoods(state, item){
           state.goodies[item.index] = item.item
+        },
+        deleteIncomeGoods(state, index){
+          state.goodies.splice(index, 1)
         }
       },
       actions: {
@@ -63,6 +69,9 @@
         },
         editOutgoGoods(state, item){
           state.goodies[item.index] = item.item
+        },
+        deleteOutgoGoods(state, index){
+          state.goodies.splice(index, 1)
         }
       },
       actions: {

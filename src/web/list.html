@@ -10,7 +10,7 @@
       <q-item-section> {{ index + 1 }}. {{ goods.name }}</q-item-section>
       <q-item-section side> ¥ {{ goods.price }} </q-item-section>
       <q-item-section avatar>
-        <q-btn flat color="negative" icon="delete" @click="deleteItem(goods)" />
+        <q-btn flat color="negative" icon="delete" @click="deleteItem(index)" />
       </q-item-section>
     </q-item>
     <q-expansion-item expand-separator icon="add" :duration="500" label="追加" v-model="isOpened">
