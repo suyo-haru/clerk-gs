@@ -172,7 +172,7 @@
       income: {
         goodies: defineAsyncComponent({ loader: () => getComponent("web/income.list"), loadingComponent: PageLoading, timeout:0 }),
         goodsDetail: defineAsyncComponent({ loader: () => getComponent("web/income.list.detail"), loadingComponent: PageLoading, timeout:0 }),
-        pos: PageImprement,
+        pos: defineAsyncComponent({ loader: () => getComponent("web/income.pos"), loadingComponent: PageLoading, timeout:0 }),
         earn: PageImprement
       },
       help: {
@@ -285,6 +285,12 @@
   <style>
     .flex-break {
       flex: 1 0 100% !important;
+    }
+    .row .flex-break{
+      height: 0 !important;
+    }
+    .column .flex-break{
+      width: 0 !important;
     }
   </style>
 </body>
