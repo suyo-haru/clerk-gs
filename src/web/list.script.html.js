@@ -20,7 +20,8 @@ return {
     },
   },
   setup(props) {
-    const formComp = Vue.ref(null)
+    const formComp = Vue.ref(null);
+    const listRef = Vue.ref(null);
     const currentGoodsPrice = Vue.ref(null);
     const currentGoodsName = Vue.ref(null);
     const currentGoodsImage = Vue.ref(null);
@@ -29,6 +30,8 @@ return {
 
     return {
       formComp,
+      listRef,
+      listEl: Vue.computed(() => listRef.value ? listRef.value.$el : null),
       currentGoodsName,
       currentGoodsPrice,
       currentGoodsImage,

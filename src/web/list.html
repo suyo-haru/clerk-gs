@@ -5,14 +5,16 @@
 </tips-banner>
 <div class="q-pa-md">
   <div class="text-h4 q-pa-md"> {{ listTitle }} </div>
-  <q-list bordered separator>
-    <q-item clickable v-ripple v-for="(goods, index) in goodies" :to="detailUrl + '/' + index">
-      <q-item-section> {{ index + 1 }}. {{ goods.name }}</q-item-section>
-      <q-item-section side> ¥ {{ goods.price }} </q-item-section>
-      <q-item-section avatar>
-        <q-btn flat color="negative" icon="delete" @click="deleteItem(index)" />
-      </q-item-section>
-    </q-item>
+  <q-list ref="listRef" bordered separator>
+    <q-intersection :root="listEl" v-for="(goods, index) in goodies" once transition="jump-up">
+      <q-item clickable v-ripple :to="detailUrl + '/' + index">
+        <q-item-section> {{ index + 1 }}. {{ goods.name }}</q-item-section>
+        <q-item-section side> ¥ {{ goods.price }} </q-item-section>
+        <q-item-section avatar>
+          <q-btn flat color="negative" icon="delete" @click="deleteItem(index)" />
+        </q-item-section>
+      </q-item>
+    </q-intersection>
     <q-expansion-item expand-separator icon="add" :duration="500" label="追加" v-model="isOpened">
       <q-form ref="formComp" @submit="onSubmit" @reset="onReset" class="fit column q-pa-md">
         <div class="fit row wrap justify-evenly">
