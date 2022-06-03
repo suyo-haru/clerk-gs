@@ -20,6 +20,7 @@ return {
     },
   },
   setup(props) {
+    const formComp = Vue.ref(null)
     const currentGoodsPrice = Vue.ref(null);
     const currentGoodsName = Vue.ref(null);
     const currentGoodsImage = Vue.ref(null);
@@ -27,6 +28,7 @@ return {
     const currentPagePath = VueRouter.useRoute().path;
 
     return {
+      formComp,
       currentGoodsName,
       currentGoodsPrice,
       currentGoodsImage,
@@ -46,6 +48,8 @@ return {
 
         currentGoodsName.value = null;
         currentGoodsPrice.value = null;
+
+        formComp.resetValidation();
       },
       deleteItem(index) {
         Quasar.Dialog.create({

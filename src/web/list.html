@@ -14,7 +14,7 @@
       </q-item-section>
     </q-item>
     <q-expansion-item expand-separator icon="add" :duration="500" label="追加" v-model="isOpened">
-      <q-form @submit="onSubmit" @reset="onReset" class="fit column q-pa-md">
+      <q-form ref="formComp" @submit="onSubmit" @reset="onReset" class="fit column q-pa-md">
         <div class="fit row wrap justify-evenly">
           <div class="q-pa-md col-grow q-gutter-md">
             <q-input name="name" filled v-model="currentGoodsName" label="名前" hint="商品名" lazy-rules
