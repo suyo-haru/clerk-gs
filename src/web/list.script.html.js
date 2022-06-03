@@ -49,7 +49,7 @@ return {
         currentGoodsName.value = null;
         currentGoodsPrice.value = null;
 
-        formComp.resetValidation();
+        formComp.value.resetValidation();
       },
       deleteItem(index) {
         Quasar.Dialog.create({
