@@ -8,7 +8,9 @@
     "weblint": "eslint --fix src/web/**/*.js",
     "test": "jest --passWithNoTests",
     "build": "npm run lint && npm run test && rimraf dist && webpack && cpx src/appsscript.json dist && cpx \"src/**/*.html\" dist && cpx \"src/**/*.js\" dist && cd dist/web && ren *.js *.html",
-    "push": "npm run build && clasp push"
+    "buildmac": "npm run lint && npm run test && rimraf dist && webpack && cpx src/appsscript.json dist && cpx \"src/**/*.html\" dist && cpx \"src/**/*.js\" dist && cd dist/web && find . -name \"*.html.js*\" | xargs rename -s .html.js .html",
+    "push": "npm run build && clasp push",
+    "pushmac": "npm run buildmac && clasp push"
   },
   "repository": {
     "type": "git",
