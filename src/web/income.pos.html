@@ -1,31 +1,40 @@
 <div class="full-width row wrap justify-between items-stretch">
-  <q-field color="white" bg-color="black" filled label="" stack-label>
-    <template v-slot:control>
-      <div class="self-center full-width no-outline text-white" tabindex="0">1234</div>
-    </template>
-  </q-field>
-  <div class="row col q-gutter-xs">
-    <div class=""><q-btn push color="primary" label="1" /></div>
-    <div class=""><q-btn push color="primary" label="2" /></div>
-    <div class=""><q-btn push color="primary" label="3" /></div>
-    <div class="flex-break"></div>
-    <div class=""><q-btn push color="primary" label="4" /></div>
-    <div class=""><q-btn push color="primary" label="5" /></div>
-    <div class=""><q-btn push color="primary" label="6" /></div>
-    <div class="flex-break"></div>
-    <div class=""><q-btn push color="primary" label="7" /></div>
-    <div class=""><q-btn push color="primary" label="8" /></div>
-    <div class=""><q-btn push color="primary" label="9" /></div>
-    <div class="flex-break"></div>
-    <div class=""><q-btn push color="primary" label=" " /></div>
-    <div class=""><q-btn push color="primary" label="0" /></div>
-    <div class=""><q-btn push color="primary" label=" " /></div>
+  <div class="fill column col-4 q-ma-md">
+    <q-field color="white" bg-color="black" filled label="" stack-label>
+      <template v-slot:control>
+        <div class="self-center full-width no-outline text-white text-h4" tabindex="0">{{ currentClerk }}</div>
+      </template>
+    </q-field>
+    <div class="row col-5 q-mt-md q-gutter-xs">
+      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="1" @click="addDigit(1)"/>
+      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="2" @click="addDigit(2)"/>
+      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="3" @click="addDigit(3)"/>
+      <div class="flex-break"></div>
+      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="4" @click="addDigit(4)"/>
+      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="5" @click="addDigit(5)"/>
+      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="6" @click="addDigit(6)"/>
+      <div class="flex-break"></div>
+      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="7" @click="addDigit(7)"/>
+      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="8" @click="addDigit(8)"/>
+      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="9" @click="addDigit(9)"/>
+      <div class="flex-break"></div>
+      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="+/-" />
+      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="0" @click="addDigit(0)"/>
+      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" icon="backspace" push color="primary" @click=""/>
+    </div>
   </div>
+
   <div class="fill col">
-    <q-list>
-      <q-item>
-        <q-item-section>Title</q-item-section>
-      </q-item>
+    <q-list ref="listRef" bordered separator>
+      <q-intersection :root="listEl" v-for="(goods, index) in goodies" once transition="jump-up">
+        <q-item clickable v-ripple>
+          <q-item-section> {{ index + 1 }}. {{ goods.name }}</q-item-section>
+          <q-item-section side> ¥ {{ goods.price }} </q-item-section>
+          <q-item-section avatar>
+            <q-btn flat color="positive" icon="add_circle_outline" />
+          </q-item-section>
+        </q-item>
+      </q-intersection>
     </q-list>
   </div>
 </div>
