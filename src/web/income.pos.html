@@ -6,7 +6,7 @@
       </template>
     </q-field>
     <div class="row col-5 q-mt-md q-gutter-xs">
-      <q-btn class="col text-h" style="aspect-ratio: 1/1;" push color="primary" label="1" @click="addDigit(1)"/>
+      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="1" @click="addDigit(1)"/>
       <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="2" @click="addDigit(2)"/>
       <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="3" @click="addDigit(3)"/>
       <div class="flex-break"></div>
@@ -30,8 +30,8 @@
         <q-item clickable>
           <q-item-section> {{ index + 1 }}. {{ goods.name }}</q-item-section>
           <q-item-section side> ¥ {{ goods.price }} </q-item-section>
-          <q-item-section avatar class="column">
-            <q-btn flat color="positive" icon="add_circle_outline" />
+          <q-item-section avatar style="flex-direction: row;">
+            <q-btn flat color="negative" icon="remove_circle_outline" />
             <div>{{  }}</div>
             <q-btn flat color="positive" icon="add_circle_outline" />
           </q-item-section>
