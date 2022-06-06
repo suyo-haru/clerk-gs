@@ -10,7 +10,7 @@ return {
             return (this.perStudentBill * Number(this.numberOfStudent)) - Number(this.studentBill)
         },
         budgetSum () {
-            return (this.perStudentBill * Number(this.numberOfStudent)) + Number(this.surplusBill) + Number(this.otherBill)
+            return (this.perStudentBill * Number(this.numberOfStudent)) + Number(this.otherBill)
         }
     },
     data () {
@@ -37,7 +37,7 @@ return {
         const studentBill = Vue.ref(store.state.prepare.budget.studentBill == 0 ? store.state.prepare.goodies.reduce((pre,now) => pre + Number(now.price), 0) : store.state.prepare.budget.studentBill);
         const numberOfStudent = Vue.ref(store.state.prepare.budget.numberOfStudent);
         const otherBill = Vue.ref(store.state.prepare.budget.otherBill);
-        store.commit('setTemporaryBill',(Math.ceil(Number(studentBill.value) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)) + Number((Math.ceil(Number(studentBill.value) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)) - Number(studentBill.value)) + Number(otherBill.value))
+        store.commit('setTemporaryBill',(Math.ceil(Number(studentBill.value) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)) + Number(otherBill.value));
         return {
             studentBill,
             numberOfStudent,
@@ -47,8 +47,8 @@ return {
             }, 500),
             onSubmit () {
                 store.commit('setBudget', {
-                    summaryBill: (Math.ceil(Number(studentBill.value) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)) + Number((Math.ceil(Number(studentBill.value) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)) - Number(studentBill.value)) + Number(otherBill.value),
-                    studentBill: studentBill.value,
+                    summaryBill: (Math.ceil(Number(studentBill.value) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)) + Number(otherBill.value),
+                    studentBill: (Math.ceil(Number(studentBill.value) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)),
                     numberOfStudent: numberOfStudent.value,
                     otherBill: otherBill.value
                 });

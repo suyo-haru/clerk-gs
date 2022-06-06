@@ -177,7 +177,7 @@
       },
       help: {
         index: defineAsyncComponent({ loader: () => getComponent("web/help"), loadingComponent: PageLoading, timeout:0 }),
-
+        faq: defineAsyncComponent({ loader: () => getComponent("web/help/faq"), loadingComponent: PageLoading, timeout:0 })
       }
     }
 
@@ -249,6 +249,10 @@
         component: Pages.help.index
       },
       {
+        path: '/help/faq',
+        component: Pages.help.faq
+      },
+      {
         path: '/help/demo',
         component: defineAsyncComponent(() => getComponent('web/help.demo'))
       }
@@ -291,6 +295,10 @@
     }
     .column .flex-break{
       width: 0 !important;
+    }
+    .clerk-button {
+      flex: 1;
+      aspect-ratio: 1 / 1;
     }
   </style>
 </body>
