@@ -1,6 +1,6 @@
 <div class="full-width row wrap justify-between items-stretch">
   <div class="fill column col-4 q-ma-md">
-    <q-field color="white" bg-color="black" filled label="" stack-label>
+    <q-field color="white" bg-color="black" filled label="" stack-label prefix="¥">
       <template v-slot:control>
         <div class="self-center full-width no-outline text-white text-h4" tabindex="0">{{ currentClerk }}</div>
       </template>
@@ -18,19 +18,21 @@
       <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="8" @click="addDigit(8)"/>
       <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="9" @click="addDigit(9)"/>
       <div class="flex-break"></div>
-      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="+/-" />
+      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="+/-" @click="reverseSign()"/>
       <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="0" @click="addDigit(0)"/>
-      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" icon="backspace" push color="primary" @click=""/>
+      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" icon="backspace" push color="primary" @click="deleteDigit()"/>
     </div>
   </div>
 
   <div class="fill col">
     <q-list ref="listRef" bordered separator>
       <q-intersection :root="listEl" v-for="(goods, index) in goodies" once transition="jump-up">
-        <q-item clickable v-ripple>
+        <q-item clickable>
           <q-item-section> {{ index + 1 }}. {{ goods.name }}</q-item-section>
           <q-item-section side> ¥ {{ goods.price }} </q-item-section>
-          <q-item-section avatar>
+          <q-item-section avatar class="column">
+            <q-btn flat color="positive" icon="add_circle_outline" />
+            <div>{{  }}</div>
             <q-btn flat color="positive" icon="add_circle_outline" />
           </q-item-section>
         </q-item>
