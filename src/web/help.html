@@ -1,4 +1,15 @@
 <q-list bordered>
+  <q-item
+      clickable
+      v-ripple="{ early: true }"
+      @click="setMenuState('prepare')"
+    >
+    <q-item-section avatar>
+      <q-icon name="close" />
+    </q-item-section>
+
+    <q-item-section>ヘルプを終了</q-item-section>
+  </q-item>
   <q-item target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfAo-oRmcKafPZlDaEW-j2n1HOpTUWYG7UzjEaP55DfoBygZg/viewform?usp=sf_link" clickable v-ripple="{ early: true }">
     <q-item-section avatar>
       <q-icon color="primary" name="feedback" />
@@ -12,5 +23,100 @@
     <q-item-section avatar>
       <q-icon name="open_in_new" />
     </q-item-section>
+  </q-item>
+  <q-item to="/help/faq" clickable>
+    <q-item-section avatar>
+      <q-icon color="primary" name="help" />
+    </q-item-section>
+
+    <q-item-section>
+      <q-item-label>よくありそうな質問</q-item-label>
+    </q-item-section>
+
+  </q-item>
+
+  <q-item
+    clickable
+    v-ripple
+    to="/help/menu"
+  >
+    <q-item-section avatar>
+      <q-icon name="menu_open" />
+    </q-item-section>
+
+    <q-item-section>左メニュー</q-item-section>
+  </q-item>
+
+  
+  <q-item
+    clickable
+    v-ripple
+    to="/help/prepare"
+  >
+    <q-item-section avatar>
+      <q-icon name="inbox" />
+    </q-item-section>
+
+    <q-item-section>準備</q-item-section>
+  </q-item>
+
+  <q-item
+    clickable
+    v-ripple
+    to="/help/outgo"
+  >
+    <q-item-section avatar>
+      <q-icon name="send" />
+    </q-item-section>
+
+    <q-item-section>支出</q-item-section>
+  </q-item>
+
+  <q-item
+    clickable
+    v-ripple
+    to="/help/income"
+  >
+    <q-item-section avatar>
+      <q-icon name="point_of_sale" />
+    </q-item-section>
+
+    <q-item-section>収支</q-item-section>
+  </q-item>
+
+  <q-item
+    clickable
+    v-ripple
+    to="/help/pos"
+  >
+    <q-item-section avatar>
+      <q-icon name="point_of_sale" />
+    </q-item-section>
+
+    <q-item-section>POSモード</q-item-section>
+  </q-item>
+
+  <q-item
+    clickable
+    v-ripple
+    to="/help/demo"
+  >
+    <q-item-section avatar>
+      <q-icon name="preview" />
+    </q-item-section>
+
+    <q-item-section>デモモード</q-item-section>
+  </q-item>
+
+  <q-item
+    clickable
+    v-ripple
+    to="/help/settings"
+  >
+    <q-item-section avatar>
+      <q-icon name="settings" />
+    </q-item-section>
+
+    <q-item-section>設定</q-item-section>
   </q-item>
 </q-list>

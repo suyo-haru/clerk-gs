@@ -1,0 +1,21 @@
+<div>
+  <div style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
+    <q-item
+      clickable
+      v-ripple
+      to="/help"
+    >
+      <q-item-section avatar>
+        <q-icon name="arrow_upward" />
+      </q-item-section>
+
+      <q-item-section>ヘルプのトップ</q-item-section>
+    </q-item>
+    <help-list ></help-list>
+  </div>
+  <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
+    <div class="absolute-bottom bg-transparent">
+      <div class="text-weight-bold">ヘルプ</div>
+    </div>
+  </q-img>
+</div>
