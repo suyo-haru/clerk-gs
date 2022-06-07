@@ -85,6 +85,10 @@ global.doGet = (e) => {
   //return ContentService.createTextOutput(HtmlService.createTemplateFromFile("layout.html").getRawContent());
 };
 
+global.doPost = (e) => {
+  Logger.log(e.postData.type);
+};
+
 global.hoge = () => {
   Logger.log(classInfos);
 };

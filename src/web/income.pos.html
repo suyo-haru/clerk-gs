@@ -1,42 +1,62 @@
-<div class="full-width row wrap justify-between items-stretch">
-  <div class="fill column col-4 q-ma-md">
-    <q-field color="white" bg-color="black" label-color="white" filled label="" stack-label prefix="¥">
+<div class="full-width row justify-between items-stretch">
+  <div class="full-height column col-4 q-ma-md">
+    <q-field class="q-ma-sm" color="white" bg-color="black" label-color="white" filled label="" stack-label >
       <template v-slot:control>
-        <div class="self-center full-width no-outline text-white text-h4" tabindex="0">{{ currentClerk }}</div>
+        <div class="self-center full-width no-outline text-white text-h4" tabindex="0">¥ {{ currentClerk }}</div>
       </template>
     </q-field>
-    <div class="row col-5 q-mt-md q-gutter-xs">
-      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="1" @click="addDigit(1)"/>
-      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="2" @click="addDigit(2)"/>
-      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="3" @click="addDigit(3)"/>
-      <div class="flex-break"></div>
-      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="4" @click="addDigit(4)"/>
-      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="5" @click="addDigit(5)"/>
-      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="6" @click="addDigit(6)"/>
-      <div class="flex-break"></div>
-      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="7" @click="addDigit(7)"/>
-      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="8" @click="addDigit(8)"/>
-      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="9" @click="addDigit(9)"/>
-      <div class="flex-break"></div>
-      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="+/-" @click="reverseSign()"/>
-      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="0" @click="addDigit(0)"/>
-      <q-btn class="col text-h5" style="aspect-ratio: 1/1;" icon="backspace" push color="primary" @click="deleteDigit()"/>
+    <div class="full-height row no-wrap justify-between q-mt-md q-gutter-xs">
+      <div class="row col-9 q-gutter-xs">
+        <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="1" @click="addDigit(1)"/>
+        <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="2" @click="addDigit(2)"/>
+        <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="3" @click="addDigit(3)"/>
+        <div class="flex-break"></div>
+        <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="4" @click="addDigit(4)"/>
+        <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="5" @click="addDigit(5)"/>
+        <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="6" @click="addDigit(6)"/>
+        <div class="flex-break"></div>
+        <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="7" @click="addDigit(7)"/>
+        <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="8" @click="addDigit(8)"/>
+        <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="9" @click="addDigit(9)"/>
+        <div class="flex-break"></div>
+        <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="+/-" @click="reverseSign()"/>
+        <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="0" @click="addDigit(0)"/>
+        <q-btn class="col text-h5" style="aspect-ratio: 1/1;" icon="backspace" push color="primary" @click="deleteDigit()"/>
+      </div>
+      <div class="column q-gutter-xs col-3">
+        <q-btn style="width: 100%;" class="text-h5 col" push color="primary" label="AC" @click=""/>
+        <div style="width: 100%;" class="row col">
+          <q-btn class="col" push color="primary" style="height: 100%;" label="+" @click=""/>
+          <q-btn class="col" push color="primary" style="height: 100%;" label="-" @click=""/>
+        </div>
+        <div style="width: 100%;" class="row col">
+          <q-btn class="col" push color="primary" style="height: 100%;" label="×" @click=""/>
+          <q-btn class="col" push color="primary" style="height: 100%;" label="÷" @click=""/>
+        </div>
+        <q-btn style="width: 100%;" class="text-h5 col-4" push color="primary" icon="keyboard_return" @click=""/>
+      </div>
     </div>
   </div>
 
-  <div class="fill col">
-    <q-list ref="listRef" bordered separator>
-      <q-intersection :root="listEl" v-for="(goods, index) in goodies" once transition="jump-up">
-        <q-item clickable>
-          <q-item-section> {{ index + 1 }}. {{ goods.name }}</q-item-section>
-          <q-item-section side> ¥ {{ goods.price }} </q-item-section>
-          <q-item-section avatar style="flex-direction: row;">
-            <q-btn flat color="negative" icon="remove_circle_outline" />
-            <div>{{  }}</div>
-            <q-btn flat color="positive" icon="add_circle_outline" />
-          </q-item-section>
-        </q-item>
-      </q-intersection>
-    </q-list>
+  <div class="column col">
+    <q-scroll-area class="col-9" ref="listRef">
+      <q-list bordered separator>
+        <q-intersection :root="listEl" v-for="(goods, index) in goodies" once transition="jump-up">
+          <q-item>
+            <q-item-section> {{ index + 1 }}. {{ goods.name }}</q-item-section>
+            <q-item-section side> ¥ {{ goods.price }} </q-item-section>
+            <q-item-section avatar style="flex-direction: row; align-items: center;">
+              <q-btn v-if="checkCurrentCount(goods) > 0" flat color="negative" icon="remove_circle_outline" @click="removeItem(goods)"/>
+              <div v-if="checkCurrentCount(goods) > 0">{{ checkCurrentCount(goods) }} 個</div>
+              <q-btn flat color="positive" icon="add_circle_outline" @click="addItem(goods)"/>
+            </q-item-section>
+          </q-item>
+        </q-intersection>
+      </q-list>
+    </q-scroll-area>
+    <div class="row col-3 items-center justify-around">
+      <p class="text-h4">合計</p>
+      <p class="text-h3">¥ {{ total() }}</p>
+    </div>
   </div>
 </div>

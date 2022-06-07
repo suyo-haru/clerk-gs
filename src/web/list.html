@@ -29,19 +29,16 @@
             </div>
           </div>
           <div v-if="acceptImage" class="q-pa-md col-grow">
-            <q-file accept="image/*" filled bottom-slots v-model="currentGoodsImage" label="領収書" counter multiple>
-              <template v-slot:prepend>
-                <q-icon name="cloud_upload" @click.stop />
-              </template>
-              <template v-slot:append>
-                <q-icon name="close" @click.stop="imageFile = null" class="cursor-pointer" />
-              </template>
-      
-              <template v-slot:hint>
-                領収書の写真
-              </template>
-            </q-file>
-            <q-img class="q-mt-lg" :src="createBlobUrl" />
+            <div class="q-pa-md">
+              <q-uploader
+                label="Auto Uploader"
+                auto-upload
+                accept=".jpg, image/*"
+                @reject=""
+                url="https://script.google.com/a/macros/higashifukuoka.net/s/AKfycbwCsD1ofy6wJH-XmmqiQrVhIlMsucO0GeOVnt4oqZpXSc0KY9_Rbrw15ytG92mJ3bk2/exec"
+                multiple
+              />
+            </div>
           </div>
         </div>
       </q-form>
