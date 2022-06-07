@@ -177,7 +177,13 @@
       },
       help: {
         index: defineAsyncComponent({ loader: () => getComponent("web/help"), loadingComponent: PageLoading, timeout:0 }),
-        faq: defineAsyncComponent({ loader: () => getComponent("web/help/faq"), loadingComponent: PageLoading, timeout:0 })
+        faq: defineAsyncComponent({ loader: () => getComponent("web/help/faq"), loadingComponent: PageLoading, timeout:0 }),
+        menu: defineAsyncComponent({ loader: () => getComponent("web/help/menu"), loadingComponent: PageLoading, timeout:0 }),
+        prepare: defineAsyncComponent({ loader: () => getComponent("web/help/prepare"), loadingComponent: PageLoading, timeout:0 }),
+        outgo: defineAsyncComponent({ loader: () => getComponent("web/help/outgo"), loadingComponent: PageLoading, timeout:0 }),
+        income: defineAsyncComponent({ loader: () => getComponent("web/help/income"), loadingComponent: PageLoading, timeout:0 }),
+        pos: defineAsyncComponent({ loader: () => getComponent("web/help/pos"), loadingComponent: PageLoading, timeout:0 }),
+        settings: defineAsyncComponent({ loader: () => getComponent("web/help/settings"), loadingComponent: PageLoading, timeout:0 })
       }
     }
 
@@ -251,6 +257,30 @@
       {
         path: '/help/faq',
         component: Pages.help.faq
+      },
+      {
+        path: '/help/menu',
+        component: Pages.help.menu
+      },
+      {
+        path: '/help/prepare',
+        component: Pages.help.prepare
+      },
+      {
+        path: '/help/outgo',
+        component: Pages.help.outgo
+      },
+      {
+        path: '/help/income',
+        component: Pages.help.income
+      },
+      {
+        path: '/help/pos',
+        component: Pages.help.pos
+      },
+      {
+        path: '/help/settings',
+        component: Pages.help.settings
       },
       {
         path: '/help/demo',
