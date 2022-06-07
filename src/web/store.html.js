@@ -9,6 +9,7 @@
           numberOfStudent: 1,
           otherBill: 0
         },
+        // @type {{ name: string, price: number }}
         goodies: [],
         info: {shopName: null, shopDetail: null}
       }),
@@ -42,6 +43,7 @@
     },
     income: {
       state: () => ({
+        // @type {{ name: string, price: number }}
         goodies: []
       }),
       mutations: {
@@ -61,6 +63,7 @@
     },
     outgo: { 
       state: () => ({
+        // @type {{ name: string, price: number, imageId: string}}
         goodies: []
       }),
       mutations: {
