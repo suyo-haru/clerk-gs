@@ -30,35 +30,23 @@ return {
     info() {
       return store.state.prepare.info;
     },
-    createBlobUrl() {
-      if (this.imageFile != null) {
-        return URL.createObjectURL(this.imageFile[0]);
-      } else {
-        return null;
-      }
-    },
   },
   setup() {
     const currentShopName = Vue.ref(store.state.prepare.info.shopName);
     const currentShopDetail = Vue.ref(store.state.prepare.info.shopDetail);
     const imageFile = Vue.ref(null);
     const isChanged = Vue.ref(false);
+
+    stroe.dispatch('getShopInfo')
     return {
       currentShopName,
       currentShopDetail,
       imageFile,
       isChanged,
       onSubmit() {
-        store.commit('setShopInfo', {
+        store.dispatch('setShopInfo', {
           shopName: currentShopName.value,
           shopDetail: currentShopDetail.value,
-        });
-
-        Quasar.Notify.create({
-          color: 'green-4',
-          textColor: 'white',
-          icon: 'cloud_done',
-          message: '設定しました。',
         });
 
         isChanged.value = false;

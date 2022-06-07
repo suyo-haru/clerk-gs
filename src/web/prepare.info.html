@@ -21,17 +21,6 @@
         <q-btn v-if="isChanged" label="変更を破棄" type="reset" color="negative" flat class="q-ml-sm" />
       </div>
     </div>
-    <div class="q-pa-md col-grow">
-      <q-uploader
-        label="店舗写真"
-        auto-upload
-        accept=".jpg, image/*"
-        @reject=""
-        url="https://script.google.com/a/macros/higashifukuoka.net/s/AKfycbwCsD1ofy6wJH-XmmqiQrVhIlMsucO0GeOVnt4oqZpXSc0KY9_Rbrw15ytG92mJ3bk2/exec"
-        multiple
-      />
-      <q-img class="q-mt-lg" :src="createBlobUrl" />
-    </div>
   </div>
   
 </q-form>
