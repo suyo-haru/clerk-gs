@@ -38,7 +38,21 @@
         }
       },
       actions: {
-
+        getShopInfo({ state, rootState, commit }) {
+          google.script.run.withSuccessHandler((info) => {
+            commit('setShopInfo', info)
+          }).getShopInfo(rootState.classID)
+        },
+        setShopInfo({ state, rootState, commit }) {
+          google.script.run.withSuccessHandler(() => {
+            Quasar.Notify.create({
+              color: 'green-4',
+              textColor: 'white',
+              icon: 'cloud_done',
+              message: '設定しました。',
+            });
+          }).getShopInfo(rootState.classID,state.info)
+        }
       }
     },
     income: {
