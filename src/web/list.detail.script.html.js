@@ -40,7 +40,7 @@ return {
     const goods = store.state[props.menuMode].goodies[route.params.goodsid];
     const currentGoodsPrice = Vue.ref(goods.price);
     const currentGoodsName = Vue.ref(goods.name);
-    const currentGoodsImage = Vue.ref(null);
+    const currentGoodsImage = Vue.ref(goods.image);
     const isChanged = Vue.ref(false);
     return {
       currentGoodsName,

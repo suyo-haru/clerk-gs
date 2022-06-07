@@ -30,6 +30,19 @@
           </div>
           <div v-if="acceptImage" class="q-pa-md col-grow">
             <div class="q-pa-md">
+              <q-file name="imageFile" accept="image/*" filled bottom-slots v-model="currentGoodsImage" label="領収書" counter>
+                <template v-slot:prepend>
+                  <q-icon name="cloud_upload" @click.stop />
+                </template>
+                <template v-slot:append>
+                  <q-icon name="close" @click.stop="currentGoodsImage = null" class="cursor-pointer" />
+                </template>
+        
+                <template v-slot:hint>
+                  領収書の写真
+                </template>
+              </q-file>
+              <q-img class="q-mt-lg" :src="createBlobUrl" />
             </div>
           </div>
         </div>

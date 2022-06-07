@@ -85,15 +85,16 @@ global.doGet = (e) => {
 };
 
 
-global.uploadImage = (fileBlob) => {
-  const driveFolder = DriveApp.getFileById(thisSpreadSheet.getId()).getParents().next()
-  const fileId = Utilities.getUuid();
+global.uploadImage = (formEl: { imageFile: GoogleAppsScript.Base.Blob; }) => {
+  const driveFolder = DriveApp.getFileById(thisSpreadSheet.getId()).getParents().next();
+  const fileBlob = formEl.imageFile;
+  fileBlob.setName(Utilities.getUuid());
   if (driveFolder.getFoldersByName(thisSpreadSheet.getName() + "_Image").hasNext()){
     return driveFolder.getFoldersByName(thisSpreadSheet.getName() + "_Image").next().createFile(fileBlob).getDownloadUrl();
   } else {
     const subFolder = driveFolder.createFolder(thisSpreadSheet.getName() + "_Image");
-    return subFolder.createFile(fileBlob).getDownloadUrl()
-  }
+    return subFolder.createFile(fileBlob).getDownloadUrl();
+  } 
 };
 
 global.hoge = () => {

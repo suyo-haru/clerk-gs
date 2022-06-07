@@ -18,6 +18,13 @@ return {
     goodies() {
       return store.state[this.$props.menuMode].goodies;
     },
+    createBlobUrl() {
+      if (this.currentGoodsImage != null) {
+        return URL.createObjectURL(this.currentGoodsImage);
+      } else {
+        return null;
+      }
+    },
   },
   setup(props) {
     const formComp = Vue.ref(null);
@@ -37,22 +44,42 @@ return {
       currentGoodsImage,
       isOpened,
       onSubmit() {
-        store.commit('add' + props.commitFunction, {
-          name: currentGoodsName.value,
-          price: currentGoodsPrice.value
-        });
+        const dialog = Quasar.Dialog.create({
+          message: '画像のアップロード中...',
+          progress: true, // we enable default settings
+          persistent: true, // we want the user to not be able to close it
+          ok: false // we want the user to not be able to close it
+        })
+        google.script.run.withSuccessHandler((url) => {
+          dialog.hide()
+          store.commit('add' + props.commitFunction, {
+            name: currentGoodsName.value,
+            price: currentGoodsPrice.value,
+            image: url
+          });
+          
+          Quasar.Notify.create({
+            color: 'green-4',
+            textColor: 'white',
+            icon: 'cloud_done',
+            message: '追加しました。'
+          });
+
+          currentGoodsName.value = null;
+          currentGoodsPrice.value = null;
+          currentGoodsImage.value = null;
+
+          formComp.value.resetValidation();
+        }).withFailureHandler(() => {
+          dialog.hide()
+          Quasar.Notify.create({
+            color: 'negative',
+            textColor: 'white',
+            icon: 'remove',
+            message: 'エラー。'
+          });
+        }).uploadImage(formComp.value.$el)
         
-        Quasar.Notify.create({
-          color: 'green-4',
-          textColor: 'white',
-          icon: 'cloud_done',
-          message: '追加しました。'
-        });
-
-        currentGoodsName.value = null;
-        currentGoodsPrice.value = null;
-
-        formComp.value.resetValidation();
       },
       deleteItem(index) {
         Quasar.Dialog.create({
@@ -69,7 +96,8 @@ return {
       onReset() {
         currentGoodsName.value = null;
         currentGoodsPrice.value = null;
-      },
+        currentGoodsImage.value = null;
+      }
     };
   },
 };
