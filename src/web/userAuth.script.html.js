@@ -46,6 +46,7 @@ return {
           store.commit('enterDemoMode');
           return;
         }
+        /*
         Quasar.Notify.create({
           message: 'この操作は許可されていません。',
           type: 'negative',
@@ -54,8 +55,7 @@ return {
           closeBtn: true,
         });
         return;
-        /*
-        return 
+        */
         if (classDatas.value.find((item) => item.classID == classCode.value.value) == undefined) {
           Quasar.Notify.create({
             message: 'クラスが存在しません。ほかのクラスを選択してください。',
@@ -80,7 +80,7 @@ return {
         } else {
           store.commit('setClassID', classCode.value.value);
         }
-        */
+        
       },
       onReset() {
         classCode.value = null;
