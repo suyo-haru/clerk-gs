@@ -56,7 +56,16 @@
             });
             commit('setShopInfo', info)
           }).setShopInfo(rootState.classID,info)
-        }
+        },
+        addPreOutgoGoods({ state, rootState, commit }, item) {
+          state.goodies.push(item)
+        },
+        editPreOutgoGoods({ state, rootState, commit }, item){
+          state.goodies[item.index] = item.item
+        },
+        deletePreOutgoGoods({ state, rootState, commit }, index){
+          state.goodies.splice(index, 1)
+        },
       }
     },
     income: {

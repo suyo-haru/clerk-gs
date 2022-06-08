@@ -79,7 +79,7 @@ global.onOpen = () => {
     .addToUi();
 };
 
-global.doGet = (e) => {
+global.doGet = () => {
   return HtmlService.createTemplateFromFile('index.html').evaluate();
   //return ContentService.createTextOutput(HtmlService.createTemplateFromFile("layout.html").getRawContent());
 };
@@ -109,7 +109,7 @@ global.hoge = () => {
  * @param {string} name - 取得するページの名前。
  * @return {object} - テンプレートオブジェクト。
  */
-global.getPageTemplate = (name) => {
+global.getPageTemplate = (name: string) => {
   const template = HtmlService.createTemplateFromFile(name + '.html').getRawContent();
   let component = 'return {}';
   try {
@@ -124,7 +124,7 @@ global.getPageTemplate = (name) => {
   };
 };
 
-global.getScript = (name) => {
+global.getScript = (name: string) => {
   return HtmlService.createTemplateFromFile(name + '.html').getRawContent();
 };
 
@@ -134,15 +134,11 @@ global.getClassList = () => {
   return classInfos;
 };
 
-global.getClassItem = (classID) => {
+global.getClassItem = (classID: (string | number)) => {
   return classInfos.find((i) => i.classID == classID);
 };
 
-/**
- * @param {string | number} classID
- * @return {{className: string, classID: string | number, shopName: string, shopDescription: string}}
- */
-global.getClassInfo = (classID) => {
+global.getClassInfo = (classID: (string | number)) => {
   const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
   const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
   const classSheet = classSpreadSheet.getSheetByName('クラスの情報');
@@ -154,11 +150,7 @@ global.getClassInfo = (classID) => {
   };
 };
 
-/**
- * @param {string | number} classID
- * @param {{shopName: string, shopDetail: string}} classInfo
- */
-global.setShopInfo = (classID, classInfo) => {
+global.setShopInfo = (classID: (string | number), classInfo: {shopName: string, shopDetail: string}) => {
   const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
   const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
   const classSheet = classSpreadSheet.getSheetByName('クラスの情報');
@@ -167,11 +159,7 @@ global.setShopInfo = (classID, classInfo) => {
   classSheet.getRange("B22").setValue(new Date());
 };
 
-/**
- * @param {string | number} classID
- * @return {{shopName: string, shopDescription: string}}
- */
-global.getShopInfo = (classID) => {
+global.getShopInfo = (classID: (string | number)) => {
   const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
   const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
   const classSheet = classSpreadSheet.getSheetByName('クラスの情報');
@@ -213,5 +201,5 @@ global.removeAllUserProperties = () => {
 };
 
 global.getUserMail = () => {
-  return Session.getUser().getEmail();
+  return Session.getActiveUser().getEmail();
 };
