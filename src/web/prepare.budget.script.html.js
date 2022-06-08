@@ -3,26 +3,18 @@ return {
         sumOfPlaning () {
             return store.state.prepare.goodies.reduce((pre,now) => pre + Number(now.price), 0);
         },
-        perStudentBill () {
-            return Math.ceil(Number(this.studentBill) / Number(this.numberOfStudent))
+        studentBill () {
+            return Math.ceil(Number(this.studentPerBill) / Number(this.numberOfStudent))
         },
         surplusBill () {
-            return (this.perStudentBill * Number(this.numberOfStudent)) - Number(this.studentBill)
+            return (this.perStudentBill * Number(this.numberOfStudent)) - Number(this.studentPerBill)
         },
         budgetSum () {
-            return (this.perStudentBill * Number(this.numberOfStudent)) + Number(this.otherBill)
-        }
-    },
-    data () {
-        return {
-            studentBill: store.state.prepare.goodies.reduce((pre,now) => pre + Number(now.price), 0),
-            numberOfStudent: 1,
-            otherBill: 0,
-            dbg: false
+            return (Number(this.perStudentBill) * Number(this.numberOfStudent)) + Number(this.otherBill)
         }
     },
     watch: {
-        studentBill() {
+        studentPerBill() {
             this.applytemporary()
         },
         numberOfStudent() {
@@ -34,12 +26,12 @@ return {
     },
     setup (){
         const { debounce } = Quasar
-        const studentBill = Vue.ref(store.state.prepare.budget.studentBill == 0 ? store.state.prepare.goodies.reduce((pre,now) => pre + Number(now.price), 0) : store.state.prepare.budget.studentBill);
+        const studentPerBill = Vue.ref(store.state.prepare.budget.studentBill == 0 ? store.state.prepare.goodies.reduce((pre,now) => pre + Number(now.price), 0) : store.state.prepare.budget.studentBill);
         const numberOfStudent = Vue.ref(store.state.prepare.budget.numberOfStudent);
         const otherBill = Vue.ref(store.state.prepare.budget.otherBill);
-        store.commit('setTemporaryBill',(Math.ceil(Number(studentBill.value) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)) + Number(otherBill.value));
+        store.commit('setTemporaryBill',(Math.ceil(Number(studentPerBill.value) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)) + Number(otherBill.value));
         return {
-            studentBill,
+            studentPerBill,
             numberOfStudent,
             otherBill,
             applytemporary : debounce(function(){
@@ -47,8 +39,8 @@ return {
             }, 500),
             onSubmit () {
                 store.commit('setBudget', {
-                    summaryBill: (Math.ceil(Number(studentBill.value) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)) + Number(otherBill.value),
-                    studentBill: (Math.ceil(Number(studentBill.value) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)),
+                    summaryBill: (Math.ceil(Number(studentPerBill.value) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)) + Number(otherBill.value),
+                    studentBill: (Math.ceil(Number(studentPerBill.value) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)),
                     numberOfStudent: numberOfStudent.value,
                     otherBill: otherBill.value
                 });

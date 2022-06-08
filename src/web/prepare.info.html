@@ -7,7 +7,7 @@
   <div class="text-h4">お店の情報</div>
   <div class="fit row wrap justify-evenly">
     <div class="q-pa-md col-grow q-gutter-md">
-      <q-input name="name" filled v-model="currentShopName" label="名前" hint="店名" lazy-rules
+      <q-input name="name" filled v-model="currentShopName" label="お店の名前" lazy-rules
         :rules="[ val => val && val.length > 0 || 'この項目は必須です。']" />
       <div class="q-gutter-sm">
         詳細・メモ

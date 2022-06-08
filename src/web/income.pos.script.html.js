@@ -67,13 +67,26 @@ return {
           
         },
         deleteDigit() {
-          currentClerk.value = Number(String(currentClerk.value).slice(0,-1))
+          if (mode.value != null) {
+            currentClerk2.value = Number(String(currentClerk2.value).slice(0,-1))
+          } else {
+            currentClerk.value = Number(String(currentClerk.value).slice(0,-1))
+          }
         },
         reverseSign() {
-          currentClerk.value = currentClerk.value * -1
+          if (mode.value != null) {
+            currentClerk2.value = currentClerk2.value * -1
+          } else {
+            currentClerk.value = currentClerk.value * -1
+          }
         },
         setMode(newMode) {
           mode.value = newMode;
+        },
+        calcDigit() {
+          currentClerk.value = parseInt(String(new Function(`return ${String(currentClerk.value)} ${mode.value} ${String(currentClerk2.value)}`)()));
+          mode.value = null
+          currentClerk2.value = 0
         },
         resetDigit() {
           mode.value = null;

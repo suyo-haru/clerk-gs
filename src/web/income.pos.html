@@ -5,7 +5,7 @@
         <div class="self-center full-width no-outline text-white text-h4" tabindex="0">¥ {{ getDigit() }}</div>
       </template>
     </q-field>
-    <div class="full-height row no-wrap justify-between q-mt-md q-gutter-xs">
+    <div class="full-height row no-wrap justify-between q-mt-sm q-gutter-xs">
       <div class="row col-9 q-gutter-xs">
         <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="1" @click="addDigit(1)"/>
         <q-btn class="col text-h5" style="aspect-ratio: 1/1;" push color="primary" label="2" @click="addDigit(2)"/>
@@ -24,7 +24,7 @@
         <q-btn class="col text-h5" style="aspect-ratio: 1/1;" icon="backspace" push color="primary" @click="deleteDigit()"/>
       </div>
       <div class="column q-gutter-xs col-3">
-        <q-btn style="width: 100%;" class="text-h5 col" push color="primary" label="AC" @click=""/>
+        <q-btn style="width: 100%;" class="text-h5 col" push color="primary" label="AC" @click="resetDigit()"/>
         <div style="width: 100%;" class="row col">
           <q-btn class="col" push color="primary" style="height: 100%;" label="+" @click="setMode('+')"/>
           <q-btn class="col" push color="primary" style="height: 100%;" label="-" @click="setMode('-')"/>
@@ -33,9 +33,10 @@
           <q-btn class="col" push color="primary" style="height: 100%;" label="×" @click="setMode('*')"/>
           <q-btn class="col" push color="primary" style="height: 100%;" label="÷" @click="setMode('/')"/>
         </div>
-        <q-btn style="width: 100%;" class="text-h5 col-4" push color="primary" icon="keyboard_return" @click=""/>
+        <q-btn style="width: 100%;" class="text-h5 col-4" push color="primary" label="=" @click="calcDigit()"/>
       </div>
     </div>
+    <q-btn class="q-ma-md" label="リストに追加→"></q-btn>
   </div>
 
   <div class="column col">

@@ -40,13 +40,13 @@ return {
     const goods = store.state[props.menuMode].goodies[route.params.goodsid];
     const currentGoodsPrice = Vue.ref(goods.price);
     const currentGoodsName = Vue.ref(goods.name);
-    const currentGoodsImage = Vue.ref(goods.image);
+    const currentGoodsImage = Vue.ref(null);
     const isChanged = Vue.ref(false);
     return {
       currentGoodsName,
       currentGoodsPrice,
-      isChanged,
       currentGoodsImage,
+      isChanged,
       onSubmit() {
         store.commit('edit' + props.commitFunction, {
           index: route.params.goodsid,
@@ -66,7 +66,7 @@ return {
       onReset() {
         currentGoodsPrice.value = goods.price;
         currentGoodsName.value = goods.name;
-        currentGoodsImage.value = null;
+        currentGoodsImage.value = goods.image;
         isChanged.value = false;
       },
     };

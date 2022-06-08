@@ -31,7 +31,7 @@
         </template>
       </q-file>
       <q-img v-if="isChanged" class="q-mt-lg" :src="createBlobUrl" />
-      <q-img v-else class="q-mt-lg" :src="currentGoodsImage" />
+      <q-img v-else class="q-mt-lg" :src="goodies[this.$route.params.goodsid].image" />
     </div>
   </div>
 </q-form>
