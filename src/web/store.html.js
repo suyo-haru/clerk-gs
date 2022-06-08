@@ -39,11 +39,14 @@
       },
       actions: {
         getShopInfo({ state, rootState, commit }) {
-          google.script.run.withSuccessHandler((info) => {
-            commit('setShopInfo', info)
-          }).getShopInfo(rootState.classID)
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler((info) => {
+              commit('setShopInfo', info)
+              resolve(info)
+            }).getShopInfo(rootState.classID)
+          })
         },
-        setShopInfo({ state, rootState, commit }) {
+        setShopInfo({ state, rootState, commit }, info) {
           google.script.run.withSuccessHandler(() => {
             Quasar.Notify.create({
               color: 'green-4',
@@ -51,7 +54,8 @@
               icon: 'cloud_done',
               message: '設定しました。',
             });
-          }).getShopInfo(rootState.classID,state.info)
+            commit('setShopInfo', info)
+          }).setShopInfo(rootState.classID,info)
         }
       }
     },

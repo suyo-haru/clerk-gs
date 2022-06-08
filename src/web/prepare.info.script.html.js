@@ -37,7 +37,10 @@ return {
     const imageFile = Vue.ref(null);
     const isChanged = Vue.ref(false);
 
-    store.dispatch('getShopInfo')
+    store.dispatch('getShopInfo').then(() => {
+      currentShopName.value = store.state.prepare.info.shopName
+      currentShopDetail.value = store.state.prepare.info.shopDetail
+    })
     return {
       currentShopName,
       currentShopDetail,
