@@ -37,7 +37,7 @@ return {
     const imageFile = Vue.ref(null);
     const isChanged = Vue.ref(false);
 
-    stroe.dispatch('getShopInfo')
+    store.dispatch('getShopInfo')
     return {
       currentShopName,
       currentShopDetail,

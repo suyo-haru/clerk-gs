@@ -44,18 +44,46 @@ return {
       currentGoodsImage,
       isOpened,
       onSubmit() {
-        const dialog = Quasar.Dialog.create({
-          message: '画像のアップロード中...',
-          progress: true, // we enable default settings
-          persistent: true, // we want the user to not be able to close it
-          ok: false // we want the user to not be able to close it
-        })
-        google.script.run.withSuccessHandler((url) => {
-          dialog.hide()
+        if (props.acceptImage) {
+          const dialog = Quasar.Dialog.create({
+            message: '画像のアップロード中...',
+            progress: true, // we enable default settings
+            persistent: true, // we want the user to not be able to close it
+            ok: false // we want the user to not be able to close it
+          })
+          google.script.run.withSuccessHandler((url) => {
+            dialog.hide()
+            store.commit('add' + props.commitFunction, {
+              name: currentGoodsName.value,
+              price: currentGoodsPrice.value,
+              image: url
+            });
+            
+            Quasar.Notify.create({
+              color: 'green-4',
+              textColor: 'white',
+              icon: 'cloud_done',
+              message: '追加しました。'
+            });
+  
+            currentGoodsName.value = null;
+            currentGoodsPrice.value = null;
+            currentGoodsImage.value = null;
+  
+            formComp.value.resetValidation();
+          }).withFailureHandler(() => {
+            dialog.hide()
+            Quasar.Notify.create({
+              color: 'negative',
+              textColor: 'white',
+              icon: 'remove',
+              message: 'エラー。'
+            });
+          }).uploadImage(formComp.value.$el)
+        } else {
           store.commit('add' + props.commitFunction, {
             name: currentGoodsName.value,
-            price: currentGoodsPrice.value,
-            image: url
+            price: currentGoodsPrice.value
           });
           
           Quasar.Notify.create({
@@ -70,16 +98,7 @@ return {
           currentGoodsImage.value = null;
 
           formComp.value.resetValidation();
-        }).withFailureHandler(() => {
-          dialog.hide()
-          Quasar.Notify.create({
-            color: 'negative',
-            textColor: 'white',
-            icon: 'remove',
-            message: 'エラー。'
-          });
-        }).uploadImage(formComp.value.$el)
-        
+        }
       },
       deleteItem(index) {
         Quasar.Dialog.create({
