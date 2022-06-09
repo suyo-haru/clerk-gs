@@ -27,6 +27,9 @@
         addPreOutgoGoods(state, item) {
           state.goodies.push(item)
         },
+        setPreOutgoGoods(state, items) {
+          state.goodies = items
+        },
         editPreOutgoGoods(state, item){
           state.goodies[item.index] = item.item
         },
@@ -57,14 +60,38 @@
             commit('setShopInfo', info)
           }).setShopInfo(rootState.classID,info)
         },
-        addPreOutgoGoods({ state, rootState, commit }, item) {
-          state.goodies.push(item)
+        // -----
+        getPreOutgoGoods({ state, rootState, commit }, item) {
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler((infos) => {
+              commit('setPreOutgoGoods', infos)
+              resolve(infos)
+            }).getShopItems(rootState.classID)
+          })
         },
-        editPreOutgoGoods({ state, rootState, commit }, item){
-          state.goodies[item.index] = item.item
+        addPreOutgoGoods({ state, rootState, commit }, item) {
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler(() => {
+              commit('addPreOutgoGoods', item)
+              resolve(item)
+            }).addShopItems(rootState.classID, item)
+          })
+        },
+        editPreOutgoGoods({ state, rootState, commit }, item) {
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler(() => {
+              commit('editPreOutgoGoods', item)
+              resolve(item)
+            }).editShopItems(rootState.classID, item.index, item.item)
+          })
         },
         deletePreOutgoGoods({ state, rootState, commit }, index){
-          state.goodies.splice(index, 1)
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler(() => {
+              commit('editPreOutgoGoods', index)
+              resolve(state.goodies)
+            }).deleteShopItems(rootState.classID, index)
+          })
         },
       }
     },
@@ -85,7 +112,38 @@
         }
       },
       actions: {
-
+        getIncomeGoods({ state, rootState, commit }, item) {
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler((infos) => {
+              commit('setIncomeGoods', infos)
+              resolve(infos)
+            }).getIncomeGoods(rootState.classID)
+          })
+        },
+        addIncomeGoods({ state, rootState, commit }, item) {
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler(() => {
+              commit('addIncomeGoods', item)
+              resolve(item)
+            }).addIncomeGoods(rootState.classID, item)
+          })
+        },
+        editIncomeGoods({ state, rootState, commit }, item) {
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler(() => {
+              commit('editIncomeGoods', item)
+              resolve(item)
+            }).editIncomeGoods(rootState.classID, item.index, item.item)
+          })
+        },
+        deleteIncomeGoods({ state, rootState, commit }, index){
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler(() => {
+              commit('editIncomeGoods', index)
+              resolve(state.goodies)
+            }).deleteShopItems(rootState.classID, index)
+          })
+        },
       }
     },
     outgo: { 
@@ -111,9 +169,6 @@
   },
   state () {
     return {
-      count1: 0,
-      count2: 0,
-      gooddies : [],
       isLoggedIn: false,
       classID: null,
       menuState: 'prepare',
@@ -121,18 +176,6 @@
     }
   },
   mutations: {
-    increment1 (state) {
-      state.count1++
-    },
-    increment2 (state) {
-      state.count2++
-    },
-    addGooddies (state, item) {
-      state.gooddies.push(item)
-    },
-    deleteGoodies (state, index) {
-      state.gooddies.pop(index)
-    },
     setMenuState (state, stateID) {
       state.menuState = stateID
     },

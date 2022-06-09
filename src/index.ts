@@ -1,5 +1,6 @@
 const TEMPLATE_SHEET_NAME = {
   クラスの情報: 'Template.Infomation',
+  商品: 'Template.Goodies',
   予算: 'Template.Budget',
   収入: 'Template.Income',
   準備: 'Template.Preparation',
@@ -156,7 +157,7 @@ global.setShopInfo = (classID: (string | number), classInfo: {shopName: string, 
   const classSheet = classSpreadSheet.getSheetByName('クラスの情報');
   classSheet.getRange("B2").setValue(classInfo.shopName);
   classSheet.getRange("A4").setValue(classInfo.shopDetail);
-  classSheet.getRange("B22").setValue(new Date());
+  classSheet.getRange("D2").setValue(new Date());
 };
 
 global.getShopInfo = (classID: (string | number)) => {
@@ -166,16 +167,70 @@ global.getShopInfo = (classID: (string | number)) => {
   return {shopName: classSheet.getRange("B2").getValue(), shopDetail: classSheet.getRange("A4").getValue()}
 };
 
+// ----
+
 global.getShopItems = (classID) => {
   const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
   const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
-  const classSheet = classSpreadSheet.getSheetByName('クラスの情報');
-  const shopItemsRange = classSheet.getRange(2, 3, classSheet.getLastRow() - 1, 3);
-  return shopItemsRange.getValues().filter((i) => i[0] !== '');
+  //const classInfoSheet = classSpreadSheet.getSheetByName('クラスの情報');
+  const classGoodiesSheet = classSpreadSheet.getSheetByName('商品');
+  if (classGoodiesSheet.getLastRow() <= 1) {
+    return [];
+  }
+  const shopItemsRange = classGoodiesSheet.getRange(2, 1, classGoodiesSheet.getLastRow() - 1, 2);
+  Logger.log(shopItemsRange.getValues().filter((i) => i[0] !== ''))
+  return shopItemsRange.getValues().filter((i) => i[0] !== '').map((i) => ({
+    name: i[0],
+    price: i[1]
+  }));
 };
 
-global.hog = () => {
-  Logger.log(global.getClassInfo(301));
+global.addShopItems = (classID, item: {name: string, price: string}) => {
+  const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
+  const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
+  const classInfoSheet = classSpreadSheet.getSheetByName('クラスの情報');
+  const classGoodiesSheet = classSpreadSheet.getSheetByName('商品');
+  if(classGoodiesSheet.getLastRow() > 1) {
+    const shopItemsRange = classGoodiesSheet.getRange(2, 1, classGoodiesSheet.getLastRow() - 1, 2);
+    const newItem = [item.name, item.price]
+    const newShopItems = shopItemsRange.getValues().slice()
+    newShopItems.push(newItem)
+    Logger.log(newShopItems)
+    const newShopItemsRange = classGoodiesSheet.getRange(2, 1, classGoodiesSheet.getLastRow(), 2);
+    newShopItemsRange.setValues(newShopItems)
+    classInfoSheet.getRange("D3").setValue(new Date())
+  } else {
+    const newItem = [item.name, item.price]
+    const newShopItems = []
+    newShopItems.push(newItem)
+    Logger.log(newShopItems)
+    const newShopItemsRange = classGoodiesSheet.getRange(2, 1, 1, 2);
+    newShopItemsRange.setValues(newShopItems)
+    classInfoSheet.getRange("D3").setValue(new Date())
+  }
+};
+
+global.deleteShopItems = (classID, index: number) => {
+  const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
+  const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
+  const classInfoSheet = classSpreadSheet.getSheetByName('クラスの情報');
+  const classGoodiesSheet = classSpreadSheet.getSheetByName('商品');
+  classGoodiesSheet.deleteRow(index + 1)
+  classInfoSheet.getRange("D3").setValue(new Date())
+};
+
+global.editShopItems = (classID, index: number , item: {name: string, price: string}) => {
+  const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
+  const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
+  const classInfoSheet = classSpreadSheet.getSheetByName('クラスの情報');
+  const classGoodiesSheet = classSpreadSheet.getSheetByName('商品');
+  const shopItemsRange = classGoodiesSheet.getRange(2, 3, classGoodiesSheet.getLastRow() - 1, 2);
+  const newItem = [item.name, item.price]
+  const newShopItems = shopItemsRange.getValues().slice()
+  newShopItems[index] = newItem
+  const newShopItemsRange = classGoodiesSheet.getRange(2, 3, classGoodiesSheet.getLastRow() - 1, 2);
+  newShopItemsRange.setValues(newShopItems)
+  classInfoSheet.getRange("D3").setValue(new Date())
 };
 
 //------------------

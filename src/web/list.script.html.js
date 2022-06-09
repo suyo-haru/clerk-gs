@@ -34,6 +34,7 @@ return {
     const currentGoodsImage = Vue.ref(null);
     const isOpened = Vue.ref(true);
     const currentPagePath = VueRouter.useRoute().path;
+    store.dispatch('get' + props.commitFunction);
 
     return {
       formComp,
@@ -53,7 +54,7 @@ return {
           })
           google.script.run.withSuccessHandler((url) => {
             dialog.hide()
-            store.commit('add' + props.commitFunction, {
+            store.dispatch('add' + props.commitFunction, {
               name: currentGoodsName.value,
               price: currentGoodsPrice.value,
               image: url
@@ -81,7 +82,7 @@ return {
             });
           }).uploadImage(formComp.value.$el)
         } else {
-          store.commit('add' + props.commitFunction, {
+          store.dispatch('add' + props.commitFunction, {
             name: currentGoodsName.value,
             price: currentGoodsPrice.value
           });
@@ -107,7 +108,7 @@ return {
           cancel: true,
           persistent: true
         }).onOk(() => {
-          store.commit('delete' + props.commitFunction, index);
+          store.dispatch('delete' + props.commitFunction, index);
           router.push(currentPagePath);
         });
         
