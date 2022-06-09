@@ -58,13 +58,14 @@ return {
               name: currentGoodsName.value,
               price: currentGoodsPrice.value,
               image: url
-            });
-            
-            Quasar.Notify.create({
-              color: 'green-4',
-              textColor: 'white',
-              icon: 'cloud_done',
-              message: '追加しました。'
+            }).then(() => {
+              formComp.value.resetValidation();
+              Quasar.Notify.create({
+                color: 'green-4',
+                textColor: 'white',
+                icon: 'cloud_done',
+                message: '追加しました。'
+              });
             });
   
             currentGoodsName.value = null;
@@ -85,15 +86,15 @@ return {
           store.dispatch('add' + props.commitFunction, {
             name: currentGoodsName.value,
             price: currentGoodsPrice.value
+          }).then(() => {
+            Quasar.Notify.create({
+              color: 'green-4',
+              textColor: 'white',
+              icon: 'cloud_done',
+              message: '追加しました。'
+            });
           });
           
-          Quasar.Notify.create({
-            color: 'green-4',
-            textColor: 'white',
-            icon: 'cloud_done',
-            message: '追加しました。'
-          });
-
           currentGoodsName.value = null;
           currentGoodsPrice.value = null;
           currentGoodsImage.value = null;
