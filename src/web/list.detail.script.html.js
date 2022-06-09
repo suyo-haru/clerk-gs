@@ -48,20 +48,22 @@ return {
       currentGoodsImage,
       isChanged,
       onSubmit() {
-        store.commit('edit' + props.commitFunction, {
+        store.dispatch('edit' + props.commitFunction, {
           index: route.params.goodsid,
           item: {
             name: currentGoodsName.value,
             price: currentGoodsPrice.value,
           }
+        }).then(() => {
+          Quasar.Notify.create({
+            color: 'green-4',
+            textColor: 'white',
+            icon: 'cloud_done',
+            message: '設定しました。',
+          });
+          isChanged.value = false;
         });
 
-        Quasar.Notify.create({
-          color: 'green-4',
-          textColor: 'white',
-          icon: 'cloud_done',
-          message: '設定しました。',
-        });
       },
       onReset() {
         currentGoodsPrice.value = goods.price;

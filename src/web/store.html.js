@@ -46,7 +46,7 @@
             google.script.run.withSuccessHandler((info) => {
               commit('setShopInfo', info)
               resolve(info)
-            }).getShopInfo(rootState.classID)
+            }).getIncomeGoods(rootState.classID)
           })
         },
         setShopInfo({ state, rootState, commit }, info) {
@@ -66,7 +66,7 @@
             google.script.run.withSuccessHandler((infos) => {
               commit('setPreOutgoGoods', infos)
               resolve(infos)
-            }).getShopItems(rootState.classID)
+            }).getIncomeGoods(rootState.classID)
           })
         },
         addPreOutgoGoods({ state, rootState, commit }, item) {
@@ -74,7 +74,7 @@
             google.script.run.withSuccessHandler(() => {
               commit('addPreOutgoGoods', item)
               resolve(item)
-            }).addShopItems(rootState.classID, item)
+            }).addIncomeGoods(rootState.classID, item)
           })
         },
         editPreOutgoGoods({ state, rootState, commit }, item) {
@@ -82,7 +82,7 @@
             google.script.run.withSuccessHandler(() => {
               commit('editPreOutgoGoods', item)
               resolve(item)
-            }).editShopItems(rootState.classID, item.index, item.item)
+            }).editIncomeGoods(rootState.classID, item.index, item.item)
           })
         },
         deletePreOutgoGoods({ state, rootState, commit }, index){
@@ -90,7 +90,7 @@
             google.script.run.withSuccessHandler(() => {
               commit('editPreOutgoGoods', index)
               resolve(state.goodies)
-            }).deleteShopItems(rootState.classID, index)
+            }).deleteIncomeGoods(rootState.classID, index)
           })
         },
       }
