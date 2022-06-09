@@ -3,7 +3,7 @@
   <p>現在、デモモードが有効化されています。</p>
   <p>このモードで加えられた変更の内容はログアウトすると消去されます。</p>
 </tips-banner>
-<q-form @submit="onSubmit" @reset="onReset" class="fit column q-pa-md">
+<q-form ref="formComp" @submit="onSubmit" @reset="onReset" class="fit column q-pa-md">
   <div class="text-h4">項目の編集 - No.{{ Number(this.$route.params.goodsid) + 1 }} </div>
   <div class="fit row wrap justify-evenly">
     <div class="q-pa-md col-grow q-gutter-md">
@@ -18,7 +18,7 @@
       </div>
     </div>
     <div v-if="acceptImage" class="q-pa-md col-grow">
-      <q-file name="imageFile" accept="image/*" filled bottom-slots v-model="currentGoodsImage" label="領収書" counter>
+      <q-file name="imageFile" accept="image/*" filled bottom-slots v-model="currentGoodsImage" label="領収書" counter :rules="[ val => val != null  || '画像を選択してください。' ]">
         <template v-slot:prepend>
           <q-icon name="cloud_upload" @click.stop />
         </template>
