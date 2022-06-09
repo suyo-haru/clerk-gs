@@ -235,7 +235,72 @@ global.editShopItems = (classID, index: number , item: {name: string, price: num
 
 //----
 
-global.getIncomeGoods = (classID) => {
+global.getOutgoGoods = (classID) => {
+  const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
+  const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
+  //const classInfoSheet = classSpreadSheet.getSheetByName('クラスの情報');
+  const classGoodiesSheet = classSpreadSheet.getSheetByName('支出');
+  if (classGoodiesSheet.getLastRow() <= 1) {
+    return [];
+  }
+  const shopItemsRange = classGoodiesSheet.getRange(3, 1, classGoodiesSheet.getLastRow() - 1, 3);
+  Logger.log(shopItemsRange.getValues().filter((i) => i[0] !== ''))
+  return shopItemsRange.getValues().filter((i) => i[0] !== '').map((i) => ({
+    name: i[1],
+    price: i[2]
+  }));
+};
+
+global.addOutgoGoods = (classID, item: {name: string, price: string, image: string}) => {
+  const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
+  const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
+  const classInfoSheet = classSpreadSheet.getSheetByName('クラスの情報');
+  const classGoodiesSheet = classSpreadSheet.getSheetByName('支出');
+  if(classGoodiesSheet.getLastRow() > 2) {
+    const shopItemsRange = classGoodiesSheet.getRange(3, 1, classGoodiesSheet.getLastRow() - 2, 4);
+    const newItem = [new Date(), item.name, item.price, item.image]
+    const newShopItems = shopItemsRange.getValues().slice().filter((i) => i[0] !== '')
+    newShopItems.push(newItem)
+    Logger.log(newShopItems)
+    const newShopItemsRange = classGoodiesSheet.getRange(3, 1, classGoodiesSheet.getLastRow() - 1, 4);
+    newShopItemsRange.setValues(newShopItems)
+    classInfoSheet.getRange("D5").setValue(new Date())
+  } else { 
+    const newShopItems = [[new Date(), item.name, item.price, item.image]]
+    Logger.log(newShopItems)
+    const newShopItemsRange = classGoodiesSheet.getRange(3, 1, 1, 4);
+    newShopItemsRange.setValues(newShopItems)
+    classInfoSheet.getRange("D5").setValue(new Date())
+  }
+};
+
+global.deleteOutgoGoods = (classID, index: number) => {
+  const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
+  const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
+  const classInfoSheet = classSpreadSheet.getSheetByName('クラスの情報');
+  const classGoodiesSheet = classSpreadSheet.getSheetByName('支出');
+  classGoodiesSheet.deleteRow(index + 3)
+  classInfoSheet.getRange("D5").setValue(new Date())
+};
+
+global.editOutgoGoods = (classID, index: number , item: {name: string, price: string, image: string}) => {
+  const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
+  const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
+  const classInfoSheet = classSpreadSheet.getSheetByName('クラスの情報');
+  const classGoodiesSheet = classSpreadSheet.getSheetByName('支出');
+  const shopItemsRange = classGoodiesSheet.getRange(3, 1, classGoodiesSheet.getLastRow() - 2, 4);
+  const newItem = [new Date(), item.name, item.price, item.image]
+  const newShopItems = shopItemsRange.getValues().slice()
+  newShopItems[index] = newItem
+  const newShopItemsRange = classGoodiesSheet.getRange(3, 1, classGoodiesSheet.getLastRow() - 2, 4);
+  newShopItemsRange.setValues(newShopItems)
+  classInfoSheet.getRange("D5").setValue(new Date())
+};
+
+
+//----
+
+global.getPreOutgoGoods = (classID) => {
   const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
   const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
   //const classInfoSheet = classSpreadSheet.getSheetByName('クラスの情報');
@@ -251,7 +316,7 @@ global.getIncomeGoods = (classID) => {
   }));
 };
 
-global.addIncomeGoods = (classID, item: {name: string, price: string}) => {
+global.addPreOutgoGoods = (classID, item: {name: string, price: string}) => {
   const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
   const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
   const classInfoSheet = classSpreadSheet.getSheetByName('クラスの情報');
@@ -274,7 +339,7 @@ global.addIncomeGoods = (classID, item: {name: string, price: string}) => {
   }
 };
 
-global.deleteIncomeGoods = (classID, index: number) => {
+global.deletePreOutgoGoods = (classID, index: number) => {
   const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
   const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
   const classInfoSheet = classSpreadSheet.getSheetByName('クラスの情報');
@@ -283,7 +348,7 @@ global.deleteIncomeGoods = (classID, index: number) => {
   classInfoSheet.getRange("D4").setValue(new Date())
 };
 
-global.editIncomeGoods = (classID, index: number , item: {name: string, price: string}) => {
+global.editPreOutgoGoods = (classID, index: number , item: {name: string, price: string}) => {
   const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
   const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
   const classInfoSheet = classSpreadSheet.getSheetByName('クラスの情報');
@@ -296,7 +361,6 @@ global.editIncomeGoods = (classID, index: number , item: {name: string, price: s
   newShopItemsRange.setValues(newShopItems)
   classInfoSheet.getRange("D4").setValue(new Date())
 };
-
 
 //------------------
 

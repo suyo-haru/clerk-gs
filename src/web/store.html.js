@@ -112,7 +112,7 @@
         }
       },
       actions: {
-        getIncomeGoods({ state, rootState, commit }, item) {
+        getIncomeGoods({ state, rootState, commit }) {
           return new Promise((resolve) => {
             google.script.run.withSuccessHandler((infos) => {
               commit('setIncomeGoods', infos)
@@ -152,6 +152,9 @@
         goodies: []
       }),
       mutations: {
+        setOutgoGoods(state, items) {
+          state.goodies = items
+        },
         addOutgoGoods(state, item) {
           state.goodies.push(item)
         },
@@ -163,7 +166,38 @@
         }
       },
       actions: {
-
+        getOutgoGoods({ state, rootState, commit }) {
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler((infos) => {
+              commit('setOutgoGoods', infos)
+              resolve(infos)
+            }).getOutgoGoods(rootState.classID)
+          })
+        },
+        addOutgoGoods({ state, rootState, commit }, item) {
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler(() => {
+              commit('addOutgoGoods', item)
+              resolve(item)
+            }).addOutgoGoods(rootState.classID, item)
+          })
+        },
+        editOutgoGoods({ state, rootState, commit }, item) {
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler(() => {
+              commit('editOutgoGoods', item)
+              resolve(item)
+            }).editOutgoGoods(rootState.classID, item.index, item.item)
+          })
+        },
+        deleteOutgoGoods({ state, rootState, commit }, index){
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler(() => {
+              commit('editOutgoGoods', index)
+              resolve(state.goodies)
+            }).deleteOutgoGoods(rootState.classID, index)
+          })
+        },
       }
     }
   },
