@@ -24,13 +24,17 @@
             <q-input name="price" filled type="number" v-model="currentGoodsPrice" label="値段" lazy-rules prefix="¥"
               :rules="[ val => val !== null && val !== '' || '値段を入力してください。' ]" />
             <div class="row justify-start">
-              <q-btn label="保存" type="submit" color="primary" />
+              <q-btn :loading="isFetching" label="保存" type="submit" color="primary" >
+                <template v-slot:loading>
+                  <q-spinner/>
+                </template>
+              </q-btn>
               <q-btn label="クリア" type="reset" color="primary" flat class="q-ml-sm" />
             </div>
           </div>
           <div v-if="acceptImage" class="q-pa-md col-grow">
             <div>
-              <q-file name="imageFile" accept="image/*" filled bottom-slots v-model="currentGoodsImage" label="領収書" counter :rules="[ val => val != null  || '画像を選択してください。' ]">
+              <q-file name="imageFile" accept="image/*" filled bottom-slots v-model="currentGoodsImage" label="領収書" counter :rules="[ val => val != null  || '画像を選択してください。' ]" lazy-rules>
                 <template v-slot:prepend>
                   <q-icon name="cloud_upload" @click.stop />
                 </template>

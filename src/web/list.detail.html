@@ -12,7 +12,11 @@
       <q-input name="price" filled type="number" v-model="currentGoodsPrice" label="値段" lazy-rules prefix="¥"
         :rules="[ val => val !== null && val !== '' || '値段を入力してください。' ]" />
       <div class="row justify-start">
-        <q-btn label="保存" type="submit" color="primary" />
+        <q-btn :loading="isFetching" label="保存" type="submit" color="primary" >
+          <template v-slot:loading>
+            <q-spinner/>
+          </template>
+        </q-btn>
         <q-btn v-if="isChanged" label="キャンセル" type="reset" color="primary" flat class="q-ml-sm" />
         <q-btn v-else :to="backUrl"  label="戻る" color="primary" flat class="q-ml-sm" />
       </div>

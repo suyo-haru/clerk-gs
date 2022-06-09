@@ -33,6 +33,7 @@ return {
     const currentGoodsName = Vue.ref(null);
     const currentGoodsImage = Vue.ref(null);
     const isOpened = Vue.ref(true);
+    const isFetching = Vue.ref(false);
     const currentPagePath = VueRouter.useRoute().path;
     store.dispatch('get' + props.commitFunction);
 
@@ -44,7 +45,9 @@ return {
       currentGoodsPrice,
       currentGoodsImage,
       isOpened,
+      isFetching,
       onSubmit() {
+        isFetching.value = true
         if (props.acceptImage) {
           const dialog = Quasar.Dialog.create({
             message: '画像のアップロード中...',
@@ -59,6 +62,7 @@ return {
               price: currentGoodsPrice.value,
               image: url
             }).then(() => {
+              isFetching.value = false;
               formComp.value.resetValidation();
               Quasar.Notify.create({
                 color: 'green-4',
@@ -75,6 +79,7 @@ return {
             formComp.value.resetValidation();
           }).withFailureHandler(() => {
             dialog.hide()
+            isFetching.value = false;
             Quasar.Notify.create({
               color: 'negative',
               textColor: 'white',
@@ -87,6 +92,7 @@ return {
             name: currentGoodsName.value,
             price: currentGoodsPrice.value
           }).then(() => {
+            isFetching.value = false;
             Quasar.Notify.create({
               color: 'green-4',
               textColor: 'white',
@@ -112,7 +118,6 @@ return {
           store.dispatch('delete' + props.commitFunction, index);
           router.push(currentPagePath);
         });
-        
       },
       onReset() {
         currentGoodsName.value = null;

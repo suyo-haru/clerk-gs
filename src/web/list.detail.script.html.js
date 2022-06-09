@@ -43,13 +43,16 @@ return {
     const currentGoodsName = Vue.ref(goods.name);
     const currentGoodsImage = Vue.ref(null);
     const isChanged = Vue.ref(false);
+    const isFetching = Vue.ref(false);
     return {
       formComp,
       currentGoodsName,
       currentGoodsPrice,
       currentGoodsImage,
       isChanged,
+      isFetching,
       onSubmit() {
+        isFetching.value = true
         if (props.acceptImage) {
           const dialog = Quasar.Dialog.create({
             message: '画像のアップロード中...',
@@ -67,6 +70,7 @@ return {
                 image: url
               }
             }).then(() => {
+              isFetching.value = false;
               Quasar.Notify.create({
                 color: 'green-4',
                 textColor: 'white',
@@ -76,6 +80,7 @@ return {
               isChanged.value = false;
             });
           }).withFailureHandler(() => {
+            isFetching.value = false
             dialog.hide()
             Quasar.Notify.create({
               color: 'negative',
@@ -92,6 +97,7 @@ return {
               price: currentGoodsPrice.value,
             }
           }).then(() => {
+            isFetching.value = false;
             Quasar.Notify.create({
               color: 'green-4',
               textColor: 'white',
