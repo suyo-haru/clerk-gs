@@ -167,6 +167,10 @@ global.getShopInfo = (classID: (string | number)) => {
   return {shopName: classSheet.getRange("B2").getValue(), shopDetail: classSheet.getRange("A4").getValue()}
 };
 
+global.shopInfoTest = () => {
+  Logger.log(global.getShopInfo(301));
+}
+
 // ----
 
 global.getShopItems = (classID) => {

@@ -11,7 +11,10 @@
         },
         // @type {{ name: string, price: number }}
         goodies: [],
-        info: {shopName: null, shopDetail: null}
+        info: {
+          shopName: "お店",
+          shopDetail: null
+        }
       }),
       mutations: {
         setTemporaryBill(state, value) {
@@ -109,6 +112,9 @@
         },
         deleteIncomeGoods(state, index){
           state.goodies.splice(index, 1)
+        },
+        setIncomeGoods(state, items){
+          state.goodies = items
         }
       },
       actions: {
@@ -117,7 +123,7 @@
             google.script.run.withSuccessHandler((infos) => {
               commit('setIncomeGoods', infos)
               resolve(infos)
-            }).getIncomeGoods(rootState.classID)
+            }).getShopItems(rootState.classID)
           })
         },
         addIncomeGoods({ state, rootState, commit }, item) {
@@ -125,7 +131,7 @@
             google.script.run.withSuccessHandler(() => {
               commit('addIncomeGoods', item)
               resolve(item)
-            }).addIncomeGoods(rootState.classID, item)
+            }).addShopItems(rootState.classID, item)
           })
         },
         editIncomeGoods({ state, rootState, commit }, item) {
@@ -133,7 +139,7 @@
             google.script.run.withSuccessHandler(() => {
               commit('editIncomeGoods', item)
               resolve(item)
-            }).editIncomeGoods(rootState.classID, item.index, item.item)
+            }).editShopItems(rootState.classID, item.index, item.item)
           })
         },
         deleteIncomeGoods({ state, rootState, commit }, index){
