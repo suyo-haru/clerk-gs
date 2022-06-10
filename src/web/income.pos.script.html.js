@@ -201,7 +201,21 @@ return {
             allItems.push({goods: customItem.value, amount: 1})
           }
           store.dispatch('addIncomeFinance', allItems).then(() => {
+            currentItemIndex.value = null
+            currentClerk.value = 0
+            currentClerk2.value = 0
+            goodsItems.value = []
+            altGoodies.value = JSON.parse(JSON.stringify(store.state.income.goodies.slice()));
+            itemCount.value = []
+            customItem.value.price = 0
+            dialog.update({
+              title: 'Done!',
+              message: 'Upload completed successfully',
+              progress: false,
+              ok: true
+            })
             dialog.hide()
+
           })
         }
       };
