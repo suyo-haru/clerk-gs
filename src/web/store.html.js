@@ -99,7 +99,7 @@
         getBudget({ state, rootState, commit }){
           return new Promise((resolve) => {
             google.script.run.withSuccessHandler((data) => {
-              commit('setBuget', data)
+              commit('setBudget', data)
               resolve(data)
             }).getBudget(rootState.classID)
           })
@@ -107,7 +107,7 @@
         setBudget({ state, rootState, commit }, data){
           return new Promise((resolve) => {
             google.script.run.withSuccessHandler(() => {
-              commit('setBuget', data)
+              commit('setBudget', data)
               resolve(data)
             }).setBudget(rootState.classID, data)
           })

@@ -4,13 +4,13 @@ return {
             return store.state.prepare.goodies.reduce((pre,now) => pre + Number(now.price), 0)
         },
         billPerStudent () {
-            return Math.ceil((this.sumOfPlaning - this.otherBill) / this.numberOfStudent)
+            return Math.ceil((this.sumOfPlaning - Number(this.otherBill)) / Number(this.numberOfStudent))
         },
         surplusBill () {
-            return (this.billPerStudent * this.numberOfStudent) - (this.sumOfPlaning - this.otherBill)
+            return (this.billPerStudent * Number(this.numberOfStudent)) - (this.sumOfPlaning - Number(this.otherBill))
         },
         budgetSum () {
-            return this.studentPerBill * this.numberOfStudent - this.surplusBill
+            return Number(this.billPerStudent) * Number(this.numberOfStudent) - this.surplusBill
         }
     },
     watch: {
@@ -39,8 +39,8 @@ return {
             }, 500),
             onSubmit () {
                 store.dispatch('setBudget', {
-                    summaryBill: this.budgetSum,
-                    studentBill: this.billPerStudent,
+                    summaryBill: Number(Math.ceil((store.state.prepare.goodies.reduce((pre,now) => pre + Number(now.price), 0) - Number(otherBill.value)) / Number(numberOfStudent.value))) * Number(numberOfStudent.value) - (Math.ceil((store.state.prepare.goodies.reduce((pre,now) => pre + Number(now.price), 0) - Number(otherBill)) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)) - (store.state.prepare.goodies.reduce((pre,now) => pre + Number(now.price), 0) - Number(otherBill.value)),
+                    studentBill: Math.ceil((store.state.prepare.goodies.reduce((pre,now) => pre + Number(now.price), 0) - Number(otherBill).vaule) / Number(numberOfStudent.value)),
                     numberOfStudent: numberOfStudent.value,
                     otherBill: otherBill.value
                 }).then(() => {

@@ -245,7 +245,7 @@ global.editShopItems = (classID, index: number , item: {name: string, price: num
 
 //----
 
-global.getShopInfo = (classID: (string | number)) => {
+global.getBudget = (classID: (string | number)) => {
   const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
   const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
   const classBudgetSheet = classSpreadSheet.getSheetByName('予算');
@@ -257,7 +257,7 @@ global.getShopInfo = (classID: (string | number)) => {
   }
 };
 
-global.setShopInfo = (classID: (string | number), data: {summaryBill: number, studentBill: number, numberOfStudent:number, otherBill:number}) => {
+global.setBudget = (classID: (string | number), data: {summaryBill: number, studentBill: number, numberOfStudent:number, otherBill:number}) => {
   const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
   const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
   const classInfoSheet = classSpreadSheet.getSheetByName('クラスの情報');
