@@ -96,12 +96,29 @@
             }).deletePreOutgoGoods(rootState.classID, index)
           })
         },
+        getBudget({ state, rootState, commit }){
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler((data) => {
+              commit('setBuget', data)
+              resolve(data)
+            }).getBudget(rootState.classID)
+          })
+        },
+        setBudget({ state, rootState, commit }, data){
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler(() => {
+              commit('setBuget', data)
+              resolve(data)
+            }).setBudget(rootState.classID, data)
+          })
+        }
       }
     },
     income: {
       state: () => ({
         // @type {{ name: string, price: number }}
-        goodies: []
+        goodies: [],
+        finance: []
       }),
       mutations: {
         addIncomeGoods(state, item) {
@@ -115,6 +132,18 @@
         },
         setIncomeGoods(state, items){
           state.goodies = items
+        },
+        addIncomeFinance(state, item) {
+          state.finance.push(item)
+        },
+        editIncomeFinance(state, item){
+          state.finance[item.index] = item.item
+        },
+        deleteIncomeFinance(state, index){
+          state.finance.splice(index, 1)
+        },
+        setIncomeFinance(state, items){
+          state.finance = items
         }
       },
       actions: {
@@ -150,12 +179,19 @@
             }).deleteShopItems(rootState.classID, index)
           })
         },
+        addIncomeFinance({ state, rootState, commit }, item) {
+          return new Promise((resolve) => {
+            commit('addIncomeFinance', item)
+            resolve()
+          })
+        },
       }
     },
     outgo: { 
       state: () => ({
         // @type {{ name: string, price: number, imageId: string}}
-        goodies: []
+        goodies: [],
+        outgo: []
       }),
       mutations: {
         setOutgoGoods(state, items) {
