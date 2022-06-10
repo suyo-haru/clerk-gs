@@ -79,7 +79,8 @@ return {
               });
               isChanged.value = false;
             });
-          }).withFailureHandler(() => {
+          }).withFailureHandler((e) => {
+            console.error(e);
             isFetching.value = false
             dialog.hide()
             Quasar.Notify.create({
