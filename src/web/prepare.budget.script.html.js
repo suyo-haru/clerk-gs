@@ -1,5 +1,3 @@
-const { setOriginalNode } = require("typescript")
-
 return {
     computed: {
         sumOfPlaning () {
