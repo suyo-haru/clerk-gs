@@ -38,9 +38,21 @@ return {
                 store.commit('setTemporaryBill',this.budgetSum)
             }, 500),
             onSubmit () {
+                function B_sumOfPlaning () {
+                    return store.state.prepare.goodies.reduce((pre,now) => pre + Number(now.price), 0)
+                }
+                function B_billPerStudent () {
+                    return Math.ceil((B_sumOfPlaning() - Number(otherBill.value)) / Number(numberOfStudent.value))
+                }
+                function B_surplusBill () {
+                    return (B_billPerStudent() * Number(numberOfStudent.value)) - (B_sumOfPlaning() - Number(otherBill.value))
+                }
+                function B_budgetSum () {
+                    return Number(B_billPerStudent()) * Number(numberOfStudent.value) - B_surplusBill()
+                }
                 store.dispatch('setBudget', {
-                    summaryBill: Number(Math.ceil((store.state.prepare.goodies.reduce((pre,now) => pre + Number(now.price), 0) - Number(otherBill.value)) / Number(numberOfStudent.value))) * Number(numberOfStudent.value) - (Math.ceil((store.state.prepare.goodies.reduce((pre,now) => pre + Number(now.price), 0) - Number(otherBill)) / Number(numberOfStudent.value)) * Number(numberOfStudent.value)) - (store.state.prepare.goodies.reduce((pre,now) => pre + Number(now.price), 0) - Number(otherBill.value)),
-                    studentBill: Math.ceil((store.state.prepare.goodies.reduce((pre,now) => pre + Number(now.price), 0) - Number(otherBill).vaule) / Number(numberOfStudent.value)),
+                    summaryBill: B_budgetSum(),
+                    studentBill: B_billPerStudent(),
                     numberOfStudent: numberOfStudent.value,
                     otherBill: otherBill.value
                 }).then(() => {
@@ -52,7 +64,8 @@ return {
                     });
                 });
                 return;
-            }
+            },
+            
         }
     }
 }

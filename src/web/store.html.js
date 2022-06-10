@@ -40,7 +40,8 @@
           state.goodies.splice(index, 1)
         },
         setShopInfo (state, info){
-          state.info = info
+          state.info.shopName = info.shopName
+          state.info.shopDetail = info.shopDetail
         }
       },
       actions: {
@@ -53,15 +54,11 @@
           })
         },
         setShopInfo({ state, rootState, commit }, info) {
-          google.script.run.withSuccessHandler(() => {
-            Quasar.Notify.create({
-              color: 'green-4',
-              textColor: 'white',
-              icon: 'cloud_done',
-              message: '設定しました。',
-            });
-            commit('setShopInfo', info)
-          }).setShopInfo(rootState.classID,info)
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler(() => {
+              resolve()
+            }).setShopInfo(rootState.classID, info)
+          });
         },
         // -----
         getPreOutgoGoods({ state, rootState, commit }, item) {

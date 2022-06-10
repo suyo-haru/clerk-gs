@@ -170,7 +170,10 @@ global.getShopInfo = (classID: (string | number)) => {
   const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
   const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
   const classSheet = classSpreadSheet.getSheetByName('クラスの情報');
-  return {shopName: classSheet.getRange("B2").getValue(), shopDetail: classSheet.getRange("A4").getValue()}
+  return {
+    shopName: classSheet.getRange("B2").getValue(),
+    shopDetail: classSheet.getRange("A4").getValue()
+  }
 };
 
 global.shopInfoTest = () => {
@@ -285,7 +288,8 @@ global.getOutgoGoods = (classID) => {
   Logger.log(shopItemsRange.getValues().filter((i) => i[0] !== ''))
   return shopItemsRange.getValues().filter((i) => i[0] !== '').map((i) => ({
     name: i[1],
-    price: i[2]
+    price: i[2],
+    image: i[3]
   }));
 };
 
