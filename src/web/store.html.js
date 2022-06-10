@@ -62,7 +62,7 @@
           });
         },
         // -----
-        getPreOutgoGoods({ state, rootState, commit }, item) {
+        getPreOutgoGoods({ state, rootState, commit }) {
           return new Promise((resolve) => {
             google.script.run.withSuccessHandler((infos) => {
               commit('setPreOutgoGoods', infos)
@@ -140,6 +140,9 @@
         deleteIncomeFinance(state, index){
           state.finance.splice(index, 1)
         },
+        deleteAllIncomeFinace (state) {
+          state.finance = []
+        },
         setIncomeFinance(state, items){
           state.finance = items
         }
@@ -177,10 +180,26 @@
             }).deleteShopItems(rootState.classID, index)
           })
         },
-        addIncomeFinance({ state, rootState, commit }, item) {
+        getIncomeFinance({ state, rootState, commit }) {
           return new Promise((resolve) => {
-            commit('addIncomeFinance', item)
-            resolve()
+            google.script.run.withSuccessHandler((finance) => {
+              const changedFinance = finance.map((chunk) => {
+                return {
+                  date: new Date(chunk.date),
+                  data: chunk.data
+                }
+              })
+              commit('setIncomeFinance', changedFinance)
+              resolve(changedFinance)
+            }).getIncomeFinance(rootState.classID)
+          })
+        },
+        addIncomeFinance({ state, rootState, commit }, query) {
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler(() => {
+              commit('addIncomeFinance', query)
+              resolve(state.finance)
+            }).addIncomeFinance(rootState.classID, { date: query.date.toJSON(), data: query.data })
           })
         },
       }

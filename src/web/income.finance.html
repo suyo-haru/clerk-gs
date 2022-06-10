@@ -4,7 +4,7 @@
       <tr>
         <th colspan="5">
           <div class="row no-wrap justify-between items-center">
-            <div class="text-h4 q-ml-sm text-white">20日11時~12時</div>
+            <div class="text-h4 q-ml-sm text-white">11日</div>
             <div class="q-pa-md flex justify-end">
               <q-pagination
                 v-model="current"
@@ -26,9 +26,26 @@
         <th class="text-right">消去</th>
       </tr>
     </thead>
-    <tbody class="bg-grey-3">
+    <tbody class="bg-grey-3" v-for="(chunk, index) in finance">
+      <tr class="text-left">
+        <td :rowspan="chunk.data.length + 2">{{ new Date(chunk.date).toLocaleTimeString() }}</td>
+      </tr>
+      <tr v-for="(item, index2) in chunk.data">
+        <td class="text-right">{{item.goods.name}}</td>
+        <td class="text-right">{{item.amount}}</td>
+        <td class="text-right">¥ {{item.goods.price * item.amount}}</td>
+        <td class="text-right"><q-btn flat icon="delete" color="negative"></q-btn></td>
+      </tr>
+      <tr>
+        <td colspan="2" class="text-right">合計</td>
+        <td class="text-right">¥ {{ chunk.data.reduce((sum, i) => (i.goods.price * i.amount) + sum, 0) }}</td>
+        <td class="text-right"><q-btn flat icon="add" color="primary"></q-btn></td>
+      </tr>
+      <!--
       <tr>
         <td rowspan="3" class="text-left">11:22:15</td>
+      </tr>
+      <tr>
         <td class="text-right">クロワッサン</td>
         <td class="text-right">2</td>
         <td class="text-right">¥ 300</td>
@@ -45,6 +62,7 @@
         <td class="text-right">¥ 400</td>
         <td class="text-right"><q-btn flat icon="add" color="primary"></q-btn></td>
       </tr>
+      -->
     </tbody>
   </q-markup-table>
 </div>
