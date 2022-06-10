@@ -284,7 +284,7 @@ global.getOutgoGoods = (classID) => {
   if (classGoodiesSheet.getLastRow() <= 1) {
     return [];
   }
-  const shopItemsRange = classGoodiesSheet.getRange(3, 1, classGoodiesSheet.getLastRow() - 1, 3);
+  const shopItemsRange = classGoodiesSheet.getRange(3, 1, classGoodiesSheet.getLastRow() - 1, 4);
   Logger.log(shopItemsRange.getValues().filter((i) => i[0] !== ''))
   return shopItemsRange.getValues().filter((i) => i[0] !== '').map((i) => ({
     name: i[1],

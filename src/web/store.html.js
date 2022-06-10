@@ -40,6 +40,7 @@
           state.goodies.splice(index, 1)
         },
         setShopInfo (state, info){
+          state.info = {};
           state.info.shopName = info.shopName
           state.info.shopDetail = info.shopDetail
         }
@@ -186,9 +187,8 @@
     },
     outgo: { 
       state: () => ({
-        // @type {{ name: string, price: number, imageId: string}}
-        goodies: [],
-        outgo: []
+        // @type {{ name: string, price: number, image: string}}
+        goodies: []
       }),
       mutations: {
         setOutgoGoods(state, items) {
