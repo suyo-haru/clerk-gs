@@ -173,7 +173,8 @@
         goodies: defineAsyncComponent({ loader: () => getComponent("web/income.list"), loadingComponent: PageLoading, timeout:0 }),
         goodsDetail: defineAsyncComponent({ loader: () => getComponent("web/income.list.detail"), loadingComponent: PageLoading, timeout:0 }),
         pos: defineAsyncComponent({ loader: () => getComponent("web/income.pos"), loadingComponent: PageLoading, timeout:0 }),
-        earn: PageImprement
+        earn: defineAsyncComponent({ loader: () => getComponent("web/income.finance"), loadingComponent: PageLoading, timeout:0 }),
+
       },
       help: {
         index: defineAsyncComponent({ loader: () => getComponent("web/help"), loadingComponent: PageLoading, timeout:0 }),

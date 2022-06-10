@@ -1,0 +1,50 @@
+<div class="q-pa-md">
+  <q-markup-table flat bordered>
+    <thead class="bg-blue">
+      <tr>
+        <th colspan="5">
+          <div class="row no-wrap justify-between items-center">
+            <div class="text-h4 q-ml-sm text-white">20日11時~12時</div>
+            <div class="q-pa-md flex justify-end">
+              <q-pagination
+                v-model="current"
+                color="white"
+                active-text-color="black"
+                :max="3"
+                :max-pages="8"
+                :boundary-numbers="false"
+              />
+            </div>
+          </div>
+        </th>
+      </tr>
+      <tr class="text-white">
+        <th class="text-left">時間</th>
+        <th class="text-right">商品名</th>
+        <th class="text-right">個数</th>
+        <th class="text-right">金額</th>
+        <th class="text-right">消去</th>
+      </tr>
+    </thead>
+    <tbody class="bg-grey-3">
+      <tr>
+        <td rowspan="3" class="text-left">11:22:15</td>
+        <td class="text-right">クロワッサン</td>
+        <td class="text-right">2</td>
+        <td class="text-right">¥ 300</td>
+        <td class="text-right"><q-btn flat icon="delete" color="negative"></q-btn></td>
+      </tr>
+      <tr>
+        <td class="text-right">お茶</td>
+        <td class="text-right">1</td>
+        <td class="text-right">¥ 100</td>
+        <td class="text-right"><q-btn flat icon="delete" color="negative"></q-btn></td>
+      </tr>
+      <tr>
+        <td colspan="2" class="text-right">合計</td>
+        <td class="text-right">¥ 400</td>
+        <td class="text-right"><q-btn flat icon="add" color="primary"></q-btn></td>
+      </tr>
+    </tbody>
+  </q-markup-table>
+</div>

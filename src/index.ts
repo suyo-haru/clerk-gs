@@ -87,15 +87,21 @@ global.doGet = () => {
 
 
 global.uploadImage = (formEl: { imageFile: GoogleAppsScript.Base.Blob; }) => {
-  const driveFolder = DriveApp.getFileById(thisSpreadSheet.getId()).getParents().next();
+  const driveFolderIderator = DriveApp.getFileById(thisSpreadSheet.getId()).getParents()
   const fileBlob = formEl.imageFile;
   fileBlob.setName(Utilities.getUuid());
-  if (driveFolder.getFoldersByName(thisSpreadSheet.getName() + "_Image").hasNext()){
-    return driveFolder.getFoldersByName(thisSpreadSheet.getName() + "_Image").next().createFile(fileBlob).getDownloadUrl();
+  if (driveFolderIderator.hasNext()){
+    const driveFolder = driveFolderIderator.next()
+    if (driveFolder.getFoldersByName(thisSpreadSheet.getName() + "_Image").hasNext()){
+      return driveFolder.getFoldersByName(thisSpreadSheet.getName() + "_Image").next().createFile(fileBlob).getDownloadUrl();
+    } else {
+      const subFolder = driveFolder.createFolder(thisSpreadSheet.getName() + "_Image");
+      return subFolder.createFile(fileBlob).getDownloadUrl();
+    } 
   } else {
-    const subFolder = driveFolder.createFolder(thisSpreadSheet.getName() + "_Image");
-    return subFolder.createFile(fileBlob).getDownloadUrl();
-  } 
+    const driveFolder = DriveApp.getFolderById("1PDewiDKoBBfqSHAslwupe3imLQTo1Zrb")
+    return driveFolder.createFile(fileBlob).getDownloadUrl();
+  }
 };
 
 global.hoge = () => {
@@ -235,6 +241,34 @@ global.editShopItems = (classID, index: number , item: {name: string, price: num
   const newShopItemsRange = classGoodiesSheet.getRange(2, 1, classGoodiesSheet.getLastRow() - 1, 2);
   newShopItemsRange.setValues(newShopItems)
   classInfoSheet.getRange("D3").setValue(new Date())
+};
+
+//----
+
+global.getShopInfo = (classID: (string | number)) => {
+  const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
+  const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
+  const classBudgetSheet = classSpreadSheet.getSheetByName('予算');
+  return {
+    summaryBill: classBudgetSheet.getRange("B1").getValue(),
+    studentBill: classBudgetSheet.getRange("B3").getValue(),
+    numberOfStudent: classBudgetSheet.getRange("B4").getValue(),
+    otherBill: classBudgetSheet.getRange("B5").getValue()
+  }
+};
+
+global.setShopInfo = (classID: (string | number), data: {summaryBill: number, studentBill: number, numberOfStudent:number, otherBill:number}) => {
+  const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
+  const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
+  const classInfoSheet = classSpreadSheet.getSheetByName('クラスの情報');
+  const classBudgetSheet = classSpreadSheet.getSheetByName('予算');
+  classBudgetSheet.getRange("B1").setValue(data.summaryBill);
+  classBudgetSheet.getRange("B2").setValue(data.studentBill * data.numberOfStudent);
+  classBudgetSheet.getRange("B3").setValue(data.studentBill);
+  classBudgetSheet.getRange("B4").setValue(data.numberOfStudent);
+  classBudgetSheet.getRange("B5").setValue(data.otherBill);
+  
+  classInfoSheet.getRange("D7").setValue(new Date());
 };
 
 //----
