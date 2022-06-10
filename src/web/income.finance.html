@@ -6,14 +6,14 @@
           <div class="row no-wrap justify-between items-center">
             <div class="text-h4 q-ml-sm text-white">11日</div>
             <div class="q-pa-md flex justify-end">
-              <q-pagination
+              <!-- <q-pagination
                 v-model="current"
                 color="white"
                 active-text-color="black"
                 :max="3"
                 :max-pages="8"
                 :boundary-numbers="false"
-              />
+              /> -->
             </div>
           </div>
         </th>
@@ -34,35 +34,13 @@
         <td class="text-right">{{item.goods.name}}</td>
         <td class="text-right">{{item.amount}}</td>
         <td class="text-right">¥ {{item.goods.price * item.amount}}</td>
-        <td class="text-right"><q-btn flat icon="delete" color="negative"></q-btn></td>
+        <td class="text-right"><q-btn flat icon="delete" color="negative" @click="deleteIncomeFinance(index, index2)"></q-btn></td>
       </tr>
       <tr>
         <td colspan="2" class="text-right">合計</td>
         <td class="text-right">¥ {{ chunk.data.reduce((sum, i) => (i.goods.price * i.amount) + sum, 0) }}</td>
-        <td class="text-right"><q-btn flat icon="add" color="primary"></q-btn></td>
+        <td class="text-right"><q-btn disable flat icon="add" color="primary"></q-btn></td>
       </tr>
-      <!--
-      <tr>
-        <td rowspan="3" class="text-left">11:22:15</td>
-      </tr>
-      <tr>
-        <td class="text-right">クロワッサン</td>
-        <td class="text-right">2</td>
-        <td class="text-right">¥ 300</td>
-        <td class="text-right"><q-btn flat icon="delete" color="negative"></q-btn></td>
-      </tr>
-      <tr>
-        <td class="text-right">お茶</td>
-        <td class="text-right">1</td>
-        <td class="text-right">¥ 100</td>
-        <td class="text-right"><q-btn flat icon="delete" color="negative"></q-btn></td>
-      </tr>
-      <tr>
-        <td colspan="2" class="text-right">合計</td>
-        <td class="text-right">¥ 400</td>
-        <td class="text-right"><q-btn flat icon="add" color="primary"></q-btn></td>
-      </tr>
-      -->
     </tbody>
   </q-markup-table>
 </div>
