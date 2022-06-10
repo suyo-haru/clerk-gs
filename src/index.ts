@@ -405,6 +405,68 @@ global.editIncomeGoods = (classID, index: number , item: {name: string, price: s
 
 //----
 
+global.getIncomeFinanceDBG = () => {
+  Logger.log(JSON.stringify(global.getIncomeFinance(999), null, 2));
+}
+
+global.getIncomeFinance = (classID) => {
+  const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
+  const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
+  const classIncomeFinanceSheet = classSpreadSheet.getSheetByName('収入');
+  if(classIncomeFinanceSheet.getLastRow() > 2) {
+    const shopItemsRange = classIncomeFinanceSheet.getRange(3, 1, classIncomeFinanceSheet.getLastRow() - 2, 4);
+    const financeDatas = [];
+    const shopItemRows = shopItemsRange.getValues().slice();
+    while(shopItemRows.length > 0) {
+      const chunk = []
+      const currenDate = shopItemRows[0][0];
+      // eslint-disable-next-line no-constant-condition
+      while(true) {
+        const item = shopItemRows.find((row) => {
+          if(currenDate.toJSON() == row[0].toJSON()) {
+            return true
+          } else {
+            return false
+          }
+        })
+        if(typeof(item) == "undefined"){
+          break;
+        } else {
+          if (shopItemRows.length == 0) {
+            break;
+          }
+          chunk.push(shopItemRows.shift())
+        }
+      }
+      const dataObj = (item) => ({
+        amount: Number(item[2]),
+        goods: {
+          name: item[1],
+          price: Number(item[3]) * Number(item[2])
+        }
+      })
+      financeDatas.push({ date: new Date(chunk[0][0]).toJSON(), data: chunk.map(dataObj)})
+    }
+    return financeDatas;
+  } else {
+    return []
+  }
+}
+
+global.addIncomeFinance = (classID, data: { date: string, data: [{ amount: number, goods: { name: string, price: number } }] }) => {
+  const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
+  const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
+  const classIncomeFinanceSheet = classSpreadSheet.getSheetByName('収入');
+  const rows = data.data.map((item) => {
+    return [new Date(data.date) ,item.goods.name, item.amount, item.goods.price * item.amount]
+  })
+  rows.forEach((row) => {
+    classIncomeFinanceSheet.appendRow(row)
+  })
+}
+
+//----
+
 global.getPreOutgoGoods = (classID) => {
   const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
   const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);

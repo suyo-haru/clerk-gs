@@ -187,35 +187,53 @@ return {
           return sum
         },
         registClerk() {
-          const dialog = Quasar.Dialog.create({
-            message: '保存中...',
-            progress: true, // we enable default settings
-            persistent: true, // we want the user to not be able to close it
-            ok: false // we want the user to not be able to close it
-          })
           let allItems = []
           for (const index in goodsItems.value){
-            allItems.push({goods: goodsItems[index], amount: itemCount[index]})
+            allItems.push({goods: goodsItems.value[index], amount: itemCount.value[index]})
           }
           if(customItem.value.price !== 0){
             allItems.push({goods: customItem.value, amount: 1})
           }
-          store.dispatch('addIncomeFinance', allItems).then(() => {
-            currentItemIndex.value = null
-            currentClerk.value = 0
-            currentClerk2.value = 0
-            goodsItems.value = []
-            altGoodies.value = JSON.parse(JSON.stringify(store.state.income.goodies.slice()));
-            itemCount.value = []
-            customItem.value.price = 0
-            dialog.update({
-              title: 'Done!',
-              message: 'Upload completed successfully',
-              progress: false,
-              ok: true
+          let sum = 0;
+          for (const index in goodsItems.value){
+            sum += goodsItems.value[index].price * itemCount.value[index]
+          }
+          sum += customItem.value.price
+          const confirmText = allItems.map((value) => {
+            return `${value.goods.name} ${value.amount > 1 ? "× " + value.amount : ""} : ¥ ${value.goods.price * value.amount}`
+          }).join("<br>");
+          const dialog = Quasar.Dialog.create({
+            title: '確認',
+            html: true,
+            message: `${confirmText}<br>合計: ¥ ${sum}`,
+            persistent: true, // we want the user to not be able to close it
+            cancel: true
+          }).onOk(() => {
+            const dialog = Quasar.Dialog.create({
+              title: null,
+              message: '保存中...',
+              progress: true, // we enable default settings
+              ok: false, // we want the user to not be able to close it
+              cancel : false
             })
-            dialog.hide()
-
+            
+            const query = { date: new Date(), data: allItems}
+            store.dispatch('addIncomeFinance', query).then(() => {
+              currentItemIndex.value = null
+              currentClerk.value = 0
+              currentClerk2.value = 0
+              goodsItems.value = []
+              altGoodies.value = JSON.parse(JSON.stringify(store.state.income.goodies.slice()));
+              itemCount.value = []
+              customItem.value.price = 0
+              dialog.update({
+                title: 'Done!',
+                message: 'Upload completed successfully',
+                progress: false,
+                ok: true
+              })
+              dialog.hide()
+            })
           })
         }
       };
