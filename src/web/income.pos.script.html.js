@@ -10,20 +10,35 @@ return {
     setup() {
       const formComp = Vue.ref(null);
       const listRef = Vue.ref(null);
+      const currentItemIndex = Vue.ref(null);
       const currentClerk = Vue.ref(0);
       const currentClerk2 = Vue.ref(0);
       const goodsItems = Vue.ref([]);
+      const altGoodies = Vue.ref(JSON.parse(JSON.stringify(store.state.income.goodies.slice())));
       const itemCount = Vue.ref([]);
-      const customItems = Vue.ref([]);
+      const customItem = Vue.ref({
+        name: "その他",
+        price: 0
+      });
       const mode = Vue.ref(null);
-      
+
+      Vue.watch(currentClerk, (newPrice) => {
+        if (currentItemIndex.value == -1) {
+          customItem.value.price = newPrice
+        } else if(currentItemIndex.value != null){
+          altGoodies.value[currentItemIndex.value].price = newPrice
+        }
+      });
 
       return {
         formComp,
         listRef,
+        currentItemIndex,
         currentClerk,
+        currentClerk2,
         goodsItems,
-        customItems,
+        altGoodies,
+        customItem,
         itemCount,
         mode,
         listEl: Vue.computed(() => listRef.value ? listRef.value.$el : null),
@@ -83,6 +98,27 @@ return {
         setMode(newMode) {
           mode.value = newMode;
         },
+        getCurrentItemName() {
+          if(currentItemIndex.value == null){
+            return ""
+          } else if (currentItemIndex.value == -1) {
+            return customItem.value.name
+          } else {
+            return altGoodies.value[currentItemIndex.value].name
+          }
+        },
+        setCurrentItem(index){
+          currentItemIndex.value = index
+          if(index == null){
+            this.resetDigit()
+          }
+          if(index == -1){
+            currentClerk.value = customItem.value.price
+          } else {
+            currentClerk.value = altGoodies.value[index].price
+          }
+          
+        },
         calcDigit() {
           currentClerk.value = parseInt(String(new Function(`return ${String(currentClerk.value)} ${mode.value} ${String(currentClerk2.value)}`)()));
           mode.value = null
@@ -92,6 +128,16 @@ return {
           mode.value = null;
           currentClerk.value = 0
           currentClerk2.value = 0
+        },
+        restorePrice() {
+          if(currentItemIndex.value == -1){
+            this.resetDigit()
+            currentClerk.value = 0;
+          } else {
+            this.resetDigit()
+            currentClerk.value = store.state.income.goodies[currentItemIndex.value].price;
+          }
+          
         },
         getModeText() {
           switch(mode.value) {
@@ -132,18 +178,31 @@ return {
             return -1
           }
         },
-        createItem(price) {
-          const itemObject = { name: "その他", price: Number(price)};
-          customItems.value.push(itemObject);
-          goodsItems.value.push(itemObject);
-          itemCount.value.push(1);
-        },
         total(){
           let sum = 0;
           for (const index in goodsItems.value){
             sum += goodsItems.value[index].price * itemCount.value[index]
           }
+          sum += customItem.value.price
           return sum
+        },
+        registClerk() {
+          const dialog = Quasar.Dialog.create({
+            message: '保存中...',
+            progress: true, // we enable default settings
+            persistent: true, // we want the user to not be able to close it
+            ok: false // we want the user to not be able to close it
+          })
+          let allItems = []
+          for (const index in goodsItems.value){
+            allItems.push({goods: goodsItems[index], amount: itemCount[index]})
+          }
+          if(customItem.value.price !== 0){
+            allItems.push({goods: customItem.value, amount: 1})
+          }
+          store.dispatch('addIncomeFinance', allItems).then(() => {
+            dialog.hide()
+          })
         }
       };
     },

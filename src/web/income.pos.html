@@ -1,8 +1,12 @@
 <div class="full-width row justify-between items-stretch">
+
   <div class="full-height column col-4 q-ma-md">
-    <q-field class="q-ma-sm" color="white" bg-color="black" label-color="white" filled :label="getModeText()" stack-label >
+    <q-field class="q-ma-sm" color="white" bg-color="black" label-color="white" filled :label="getModeText()" stack-label bottom-slots>
       <template v-slot:control>
         <div class="self-center full-width no-outline text-white text-h4" tabindex="0">¥ {{ getDigit() }}</div>
+      </template>
+      <template v-if="currentItemIndex !== null" v-slot:hint>
+        {{ getCurrentItemName() }} の金額を編集中
       </template>
     </q-field>
     <div class="full-height row no-wrap justify-between q-mt-sm q-gutter-xs">
@@ -24,7 +28,9 @@
         <q-btn class="col text-h5" style="aspect-ratio: 1/1;" icon="backspace" push color="primary" @click="deleteDigit()"/>
       </div>
       <div class="column q-gutter-xs col-3">
-        <q-btn style="width: 100%;" class="text-h5 col" push color="primary" label="AC" @click="resetDigit()"/>
+        <q-btn v-if="currentItemIndex !== null" style="width: 100%;" class="text-h6 col" push color="primary" icon="settings_backup_restore" @click="restorePrice()"/>
+        <q-btn v-else style="width: 100%;" class="text-h6 col" push color="primary" label="AC" @click="resetDigit()"/>
+        
         <div style="width: 100%;" class="row col">
           <q-btn class="col" push color="primary" style="height: 100%;" label="+" @click="setMode('+')"/>
           <q-btn class="col" push color="primary" style="height: 100%;" label="-" @click="setMode('-')"/>
@@ -36,14 +42,14 @@
         <q-btn style="width: 100%;" class="text-h5 col-4" push color="primary" label="=" @click="calcDigit()"/>
       </div>
     </div>
-    <q-btn class="q-ma-md" label="リストに追加→"></q-btn>
+    <q-btn v-if="currentItemIndex !== null" class="q-ma-md" label="変更の終了" icon="close" @click="setCurrentItem(null)"></q-btn>
   </div>
 
   <div class="column col">
     <q-scroll-area class="col-9" ref="listRef">
       <q-list bordered separator>
-        <q-intersection :root="listEl" v-for="(goods, index) in goodies" once transition="jump-up">
-          <q-item>
+        <q-intersection :root="listEl" v-for="(goods, index) in altGoodies" once transition="jump-up">
+          <q-item clickable v-ripple @click="setCurrentItem(index)">
             <q-item-section> {{ index + 1 }}. {{ goods.name }}</q-item-section>
             <q-item-section side> ¥ {{ goods.price }} </q-item-section>
             <q-item-section avatar style="flex-direction: row; align-items: center;">
@@ -53,11 +59,18 @@
             </q-item-section>
           </q-item>
         </q-intersection>
+        <q-item clickable v-ripple @click="setCurrentItem(-1)">
+          <q-item-section> 追加金・値引き・他 </q-item-section>
+          <q-item-section v-if="customItem.price != 0" side> ¥ {{ customItem.price }} </q-item-section>
+          <q-item-section v-else side> 金額を指定... </q-item-section>
+        </q-item>
       </q-list>
     </q-scroll-area>
-    <div class="row col-3 items-center justify-around">
-      <p class="text-h4">合計</p>
-      <p class="text-h3">¥ {{ total() }}</p>
-    </div>
+    <q-btn push class="col-3" @click="registClerk()">
+      <div class="full-width row items-center justify-around">
+        <p class="text-h4">合計</p>
+        <p class="text-h3">¥ {{ total() }}</p>
+      </div>
+    </q-btn>
   </div>
 </div>
