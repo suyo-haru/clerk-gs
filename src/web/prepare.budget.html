@@ -5,38 +5,17 @@
   </div>
   <div class="full-width column items-stretch q-mx-md q-gutter-md">
     <div class="full-width row items-center q-gutter-sm">
-      <div class="text-h3 q-mx-lg">(</div>
-      <q-field class="col" label="予定支出の合計" stack-label bottom-slots readonly>
-        <template v-slot:control>
-          <div class="self-center full-width no-outline" tabindex="0">¥ {{ sumOfPlaning }}</div>
-        </template>
-        <template v-slot:hint>
-          「支出予定」タブで登録した物品の値段の合計です。
-        </template>
-      </q-field>
-      <div class="text-h3 q-mx-lg">-</div>
-      <q-input type="number" class="col" filled v-model="otherBill" label="先生・学校などの負担金額" prefix="¥" />
-      <div class="text-h3 q-mx-lg">) ÷</div>
+      <q-input type="number" class="col" filled v-model="billPerStudent" label="生徒一人あたり" prefix="¥" />
+      <div class="text-h3 q-mx-lg">×</div>
       <q-input type="number" class="col" filled v-model="numberOfStudent" label="生徒人数" suffix="人" />
+      <div class="text-h3 q-mx-lg">+</div>
+      <q-input type="number" class="col" filled v-model="otherBill" label="先生・学校などの負担金額" prefix="¥" />
     </div>
     <div class="full-width row items-center q-gutter-md">
       <div class="text-h3 q-mx-lg"> = </div>
-      
-      <q-field class="col-grow" label="一人あたりの負担額" stack-label bottom-slots readonly>
+      <q-field class="col-grow" label="予算" stack-label readonly>
         <template v-slot:control>
-          <div class="self-center full-width no-outline" tabindex="0">¥ {{ billPerStudent }}</div>
-        </template>
-        <template v-slot:hint>
-          一人当たりの負担額です。
-        </template>
-      </q-field>
-      <div class="text-h3 q-mx-lg">+</div>
-      <q-field class="col-grow" label="（余剰金）" stack-label bottom-slots readonly>
-        <template v-slot:control>
-          <div class="self-center full-width no-outline" tabindex="0">¥ {{ surplusBill }}</div>
-        </template>
-        <template v-slot:hint>
-          「生徒負担の合計金額」との差です。
+          <div class="self-center full-width no-outline" tabindex="0">¥ {{ budgetSum }}</div>
         </template>
       </q-field>
     </div>

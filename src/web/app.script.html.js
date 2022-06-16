@@ -85,4 +85,14 @@ return {
       return store.state.menuState;
     },
   },
+  setup() {
+    if(store.state.classID == "999"){
+      Quasar.Dialog.create({
+        title: "警告",
+        html: true,
+        message: "<p>現在、デモモードで編集中です。</p><p><b>この編集は保存されませんのでご注意ください。</b></p>",
+        persistent: true // we want the user to not be able to close it
+      })
+    }
+  }
 };

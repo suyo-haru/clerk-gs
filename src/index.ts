@@ -254,22 +254,21 @@ global.getBudget = (classID: (string | number)) => {
   const classBudgetSheet = classSpreadSheet.getSheetByName('予算');
   return {
     summaryBill: classBudgetSheet.getRange("B1").getValue(),
-    studentBill: classBudgetSheet.getRange("B3").getValue(),
-    numberOfStudent: classBudgetSheet.getRange("B4").getValue(),
-    otherBill: classBudgetSheet.getRange("B5").getValue()
+    billPerStudent: classBudgetSheet.getRange("B2").getValue(),
+    numberOfStudent: classBudgetSheet.getRange("B3").getValue(),
+    otherBill: classBudgetSheet.getRange("B4").getValue()
   }
 };
 
-global.setBudget = (classID: (string | number), data: {summaryBill: number, studentBill: number, numberOfStudent:number, otherBill:number}) => {
+global.setBudget = (classID: (string | number), data: {summaryBill: number, billPerStudent: number, numberOfStudent:number, otherBill:number}) => {
   const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
   const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
   const classInfoSheet = classSpreadSheet.getSheetByName('クラスの情報');
   const classBudgetSheet = classSpreadSheet.getSheetByName('予算');
   classBudgetSheet.getRange("B1").setValue(data.summaryBill);
-  classBudgetSheet.getRange("B2").setValue(data.studentBill * data.numberOfStudent);
-  classBudgetSheet.getRange("B3").setValue(data.studentBill);
-  classBudgetSheet.getRange("B4").setValue(data.numberOfStudent);
-  classBudgetSheet.getRange("B5").setValue(data.otherBill);
+  classBudgetSheet.getRange("B2").setValue(data.billPerStudent);
+  classBudgetSheet.getRange("B3").setValue(data.numberOfStudent);
+  classBudgetSheet.getRange("B4").setValue(data.otherBill);
   
   classInfoSheet.getRange("D7").setValue(new Date());
 };
@@ -406,7 +405,7 @@ global.editIncomeGoods = (classID, index: number , item: {name: string, price: s
 //----
 
 global.getIncomeFinanceDBG = () => {
-  Logger.log(JSON.stringify(global.getIncomeFinance(999), null, 2));
+  Logger.log(JSON.stringify(global.deleteIncomeFinance(999,2,0), null, 2));
 }
 
 global.getIncomeFinance = (classID) => {
@@ -442,7 +441,7 @@ global.getIncomeFinance = (classID) => {
         amount: Number(item[2]),
         goods: {
           name: item[1],
-          price: Number(item[3]) * Number(item[2])
+          price: Number(item[3])
         }
       })
       financeDatas.push({ date: new Date(chunk[0][0]).toJSON(), data: chunk.map(dataObj)})
@@ -463,6 +462,59 @@ global.addIncomeFinance = (classID, data: { date: string, data: [{ amount: numbe
   rows.forEach((row) => {
     classIncomeFinanceSheet.appendRow(row)
   })
+}
+
+global.deleteIncomeFinance = (classID, chunkIndex, itemIndex) => {
+  const classSpreadSheetUrl = classInfos.find((i) => i.classID == classID).spreadSheetUrl;
+  const classSpreadSheet = SpreadsheetApp.openByUrl(classSpreadSheetUrl);
+  const classIncomeFinanceSheet = classSpreadSheet.getSheetByName('収入');
+  if(classIncomeFinanceSheet.getLastRow() > 2) {
+    const shopItemsRange = classIncomeFinanceSheet.getRange(3, 1, classIncomeFinanceSheet.getLastRow() - 2, 4);
+    const financeDatas = [];
+    const shopItemRows = shopItemsRange.getValues().slice();
+    while(shopItemRows.length > 0) {
+      const chunk = []
+      const currenDate = shopItemRows[0][0];
+      // eslint-disable-next-line no-constant-condition
+      while(true) {
+        const item = shopItemRows.find((row) => {
+          if(currenDate.toJSON() == row[0].toJSON()) {
+            return true
+          } else {
+            return false
+          }
+        })
+        if(typeof(item) == "undefined"){
+          break;
+        } else {
+          if (shopItemRows.length == 0) {
+            break;
+          }
+          chunk.push(shopItemRows.shift())
+        }
+      }
+      
+      const dataObj = (item) => ({
+        amount: Number(item[2]),
+        goods: {
+          name: item[1],
+          price: Number(item[3]) * Number(item[2])
+        }
+      })
+      financeDatas.push({ date: new Date(chunk[0][0]).toJSON(), data: chunk.map(dataObj)})
+      if(financeDatas.length - 1 == chunkIndex) {
+        let deleteRowIndex = 0;
+        for (let i = 0; i < chunkIndex; i++) {
+          deleteRowIndex += financeDatas[i].data.length
+        }
+        classIncomeFinanceSheet.deleteRow(deleteRowIndex + itemIndex + 3);
+        return true
+      }
+    }
+    return false;
+  } else {
+    return false;
+  }
 }
 
 //----

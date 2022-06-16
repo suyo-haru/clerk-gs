@@ -5,7 +5,7 @@
         budget: {
           temporaryBill: 0,
           summaryBill: 0,
-          studentBill: 0,
+          billPerStudent: 0,
           numberOfStudent: 1,
           otherBill: 0
         },
@@ -21,9 +21,8 @@
           state.budget.temporaryBill = value
         },
         setBudget(state, item) {
-          state.budget.temporaryBill = item.summaryBill
           state.budget.summaryBill = item.summaryBill
-          state.budget.studentBill = item.studentBill
+          state.budget.billPerStudent = item.billPerStudent
           state.budget.numberOfStudent = item.numberOfStudent
           state.budget.otherBill = item.otherBill
         },
@@ -135,10 +134,10 @@
           state.finance.push(item)
         },
         editIncomeFinance(state, item){
-          state.finance[item.index] = item.item
+          //state.finance[item.index] = item.item
         },
-        deleteIncomeFinance(state, index){
-          state.finance.splice(index, 1)
+        deleteIncomeFinance(state, indexes){
+          state.finance[indexes[0]].data.pop(indexes[1])
         },
         deleteAllIncomeFinace (state) {
           state.finance = []
@@ -202,6 +201,17 @@
             }).addIncomeFinance(rootState.classID, { date: query.date.toJSON(), data: query.data })
           })
         },
+        /**
+         * @param {[number]} indexes 
+         */
+        deleteIncomeFinance({ state, rootState, commit }, indexes) {
+          return new Promise((resolve) => {
+            google.script.run.withSuccessHandler(() => {
+              commit('deleteIncomeFinance', indexes)
+              resolve(state.finance)
+            }).deleteIncomeFinance(rootState.classID, indexes[0], indexes[1])
+          })
+        }
       }
     },
     outgo: { 
