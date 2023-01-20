@@ -1,8 +1,6 @@
-# gas-clasp-starter
-A starter template for Google Apps Script by [google/clasp](https://github.com/google/clasp)
+# cash register with gas-clasp-starter
 
-## Article
-[(Japanese) Google Apps Script をローカル環境で快適に開発するためのテンプレートを作りました](https://qiita.com/howdy39/items/0e799a9bfc1d3bccf6e5)
+GASだけで会計登録とかができるWebアプリを作ろうとした残骸
 
 ## Tech Stack
 - [google/clasp](https://github.com/google/clasp)
@@ -36,17 +34,6 @@ What is scriptId ? https://github.com/google/clasp#scriptid-required
 {
   "scriptId": <your_script_id>,
   "rootDir": "dist"
-}
-```
-
-#### Open `src/appsscript.json`, change timeZone (optional)
-[Apps Script Manifests](https://developers.google.com/apps-script/concepts/manifests)
-```
-{
-  "timeZone": "Asia/Tokyo", ## Change timeZone
-  "dependencies": {
-  },
-  "exceptionLogging": "STACKDRIVER"
 }
 ```
 
